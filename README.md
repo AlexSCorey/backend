@@ -35,11 +35,6 @@ GET https://fierce-forest-56311.herokuapp.com/users
 <!-- Will eventually need manager api_token -->
 
 
-## users#destroy (delete users)
-
-<!-- Will eventually need manager api_token -->
-
-DELETE https://fierce-forest-56311.herokuapp.com/users/:id
 
 
 
