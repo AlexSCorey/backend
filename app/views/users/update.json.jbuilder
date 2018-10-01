@@ -5,5 +5,4 @@ json.user do
     json.email @user.email
     json.phone_number @user.phone_number
     json.password_digest @user.password_digest
-
 end
