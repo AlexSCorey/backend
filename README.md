@@ -35,7 +35,7 @@ optional keys:
 
 GET https://fierce-forest-56311.herokuapp.com/users
 
-<!-- Will eventually need manager api_token -->
+api_token required
 
 
 
