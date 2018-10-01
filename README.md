@@ -1,24 +1,16 @@
-# README
+## users#create (register)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+POST https://fierce-forest-56311.herokuapp.com/users
 
-Things you may want to cover:
+api_token not required
 
-* Ruby version
+required keys:
+* name
+* email, must be unique
+* password, minimum length: 5
 
-* System dependencies
+optional keys:
+* phone_number
 
-* Configuration
 
-* Database creation
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
