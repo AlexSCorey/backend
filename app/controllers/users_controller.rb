@@ -27,18 +27,13 @@ class UsersController < ApplicationController
 
     def update
         set_user
-        if current_user.id != @user_id
+        if current_user.id != @user.id
             render json: @user.errors, status: :unauthorized
         elsif @user.update_attributes(user_params)
             render json: @user, status: :ok
         else
             render json: @user.errors.messages, status: :unprocessable_entity
         end
-    end
-
-    def destroy
-        set_user
-        @user.destroy
     end
 
 
