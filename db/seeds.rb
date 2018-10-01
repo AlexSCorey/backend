@@ -32,3 +32,18 @@ USERS = [
 USERS.each do |user|
   User.create!(user)
 end
+
+CALENDARS = [
+  {name: "Chief Beef's Burger Stop"},
+  {name: "Monsieur Frites Fry Salon"},
+  {name: "Momento Polaroid Archive"},
+  {name: "Bigly Smiles Dentist"}
+]
+
+CALENDARS.each do |calendar_source|
+  users = User.all.shuffle()
+  calendar = Calendar.create!(calendar_source)
+  calendar.owners.push(users.first)
+  calendar.managers.push(users.shift(2))
+  calendar.employees.push(users)
+end
