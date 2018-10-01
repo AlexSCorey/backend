@@ -13,4 +13,13 @@ optional keys:
 * phone_number
 
 
+## users#login (login)
+
+POST https://fierce-forest-56311.herokuapp.com/logins
+
+api_token not required
+
+required keys:
+* email
+* password
 
