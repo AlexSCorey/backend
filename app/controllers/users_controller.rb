@@ -30,7 +30,7 @@ class UsersController < ApplicationController
         if current_user.id != @user.id
             render json: @user.errors, status: :unauthorized
         elsif @user.update_attributes(user_params)
-            render json: @user, status: :ok
+            render "/users/update.json", status: :ok
         else
             render json: @user.errors.messages, status: :unprocessable_entity
         end
