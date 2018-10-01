@@ -1,3 +1,13 @@
 class Calendar < ApplicationRecord
   validates :name, presence: true
+
+  has_and_belongs_to_many :owners,
+    class_name: "User",
+    join_table: "calendars_owners"
+  has_and_belongs_to_many :managers,
+    class_name: "User",
+    join_table: "calendars_managers"
+  has_and_belongs_to_many :employees,
+    class_name: "User",
+    join_table: "calendars_employees"
 end
