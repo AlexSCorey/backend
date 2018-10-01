@@ -13,6 +13,7 @@ optional keys:
 * phone_number
 
 
+
 ## users#edit (update)
 
 POST https://fierce-forest-56311.herokuapp.com/users/:id
@@ -41,5 +42,16 @@ GET https://fierce-forest-56311.herokuapp.com/users
 
 DELETE https://fierce-forest-56311.herokuapp.com/users/:id
 
+
+
+## users#login (login)
+
+POST https://fierce-forest-56311.herokuapp.com/logins
+
+api_token not required
+
+required keys:
+* email
+* password
 
 
