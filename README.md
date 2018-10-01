@@ -1,3 +1,5 @@
+# API Documentation
+
 ## users#create (register)
 
 POST https://fierce-forest-56311.herokuapp.com/users
@@ -50,3 +52,8 @@ required keys:
 * password
 
 
+## calendars#index
+
+GET https://fierce-forest-56311.herokuapp.com/calendars
+
+api_token required
