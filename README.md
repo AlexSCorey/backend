@@ -31,13 +31,11 @@ optional keys:
 * phone_number
 
 
-## users#index (all users)
+## users#index (all users per calendar)
 
-GET https://fierce-forest-56311.herokuapp.com/users
+GET https://fierce-forest-56311.herokuapp.com/calendars/:id/users
 
 api_token required
-
-
 
 
 
