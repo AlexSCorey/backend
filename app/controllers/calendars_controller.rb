@@ -7,7 +7,7 @@ class CalendarsController < ApplicationController
       @employed_calendars = current_user.employed_calendars
       render "/calendars/index.json", status: :ok
     else
-      render :json => "unauthorized", status: :unauthorized
+      render json: '{}', status: :unauthorized
     end
   end
 
@@ -21,28 +21,39 @@ class CalendarsController < ApplicationController
         render :json => @calendar.errors, status: :unprocessable_entity
       end
     else
-      render :json => "unauthorized", status: :unauthorized
+      render json: '{}', status: :unauthorized
     end
   end
 
   def show
-    if current_user
+    set_calendar
+    if @calendar.owners.include?(current_user) ||
+      @calendar.managers.include?(current_user) ||
+      @calendar.employees.include?(current_user)
+      render json: @calendar, status: :ok
     else
-      render :json => "unauthorized", status: :unauthorized
+      render json: '{}', status: :unauthorized
     end
   end
 
   def update
-    if current_user
+    set_calendar
+    if @calendar.owners.include?(current_user) ||
+      @calendar.managers.include?(current_user)
+      if @calendar.update_attributes(calendar_params)
+        render json: @calendar, status: :ok
+      else
+        render json: @calendar.errors, status: :unprocessable_entity
+      end
     else
-      render :json => "unauthorized", status: :unauthorized
+      render json: '{}', status: :unauthorized
     end
   end
 
   def destroy
     if current_user
     else
-      render :json => "unauthorized", status: :unauthorized
+      render json: '{}', status: :unauthorized
     end
   end
 
