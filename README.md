@@ -66,8 +66,8 @@ api_token required
 ## time zone codes
 
 Code,Time Zone,Offset from GMT    
-gmt,Greenwich Mean,0    
-est,Eastern Standard,5    
-cst,Central Standard,6    
-mst,Mountain Standard,7    
-pst,Pacific Standard,8    
+gmt,Greenwich Mean,0  
+est,Eastern Standard,5  
+cst,Central Standard,6  
+mst,Mountain Standard,7  
+pst,Pacific Standard,8  
