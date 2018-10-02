@@ -34,10 +34,26 @@ USERS.each do |user|
 end
 
 CALENDARS = [
-  {name: "Chief Beef's Burger Stop"},
-  {name: "Monsieur Frites Fry Salon"},
-  {name: "Momento Polaroid Archive"},
-  {name: "Bigly Smiles Dentist"}
+  {name: "Chief Beef's Burger Stop",
+    employee_hour_threshold_daily: 10,
+    employee_hour_threshold_weekly: 40,
+    time_zone: "Eastern Time (US & Canada)",
+    daylight_savings: true},
+  {name: "Monsieur Frites Fry Salon",
+    employee_hour_threshold_daily: 6,
+    employee_hour_threshold_weekly: 30,
+    time_zone: "Central Time (US & Canada)",
+    daylight_savings: true},
+  {name: "Momento Polaroid Archive",
+    employee_hour_threshold_daily: 16,
+    employee_hour_threshold_weekly: 60,
+    time_zone: "Mountain Time (US & Canada)",
+    daylight_savings: true},
+  {name: "Bigly Smiles Dentist",
+    employee_hour_threshold_daily: 8,
+    employee_hour_threshold_weekly: 50,
+    time_zone: "Pacific Time (US & Canada)",
+    daylight_savings: true}
 ]
 
 CALENDARS.each do |calendar_source|
