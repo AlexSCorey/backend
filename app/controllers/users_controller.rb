@@ -6,8 +6,16 @@ class UsersController < ApplicationController
     end
 
     def index
-        @users = User.all
-        render json: @users
+        @calendar = Calendar.find(params[:calendar_id])
+        if @calendar.employees.include?(current_user)
+            render "/users/index.json", status: :ok
+        elsif @calendar.managers.include?(current_user)
+            render "/users/index.json", status: :ok
+        elsif @calendar.owners.include?(current_user)
+            render "/users/index.json", status: :ok
+        else
+            render json: ("You don't have access to this calendar"), status: :unauthorized
+        end
     end
 
     def create
