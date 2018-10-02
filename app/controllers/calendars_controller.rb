@@ -16,7 +16,8 @@ class CalendarsController < ApplicationController
       @calendar = Calendar.new(calendar_params)
       if @calendar.save
         @calendar.owners.push(current_user)
-        render json: @calendar, status: :ok
+        @role = "owner"
+        render "/calendars/show.json", status: :ok
       else
         render json: @calendar.errors, status: :unprocessable_entity
       end
@@ -43,13 +44,12 @@ class CalendarsController < ApplicationController
 
   def update
     set_calendar
-    if @calendar.owners.include?(current_user) ||
-      @calendar.managers.include?(current_user)
-      if @calendar.update_attributes(calendar_params)
-        render json: @calendar, status: :ok
-      else
-        render json: @calendar.errors, status: :unprocessable_entity
-      end
+    if @calendar.owners.include?(current_user)
+      @role = "owner"
+      update_calendar
+    elsif @calendar.managers.include?(current_user)
+      @role = "manager"
+      update_calendar
     else
       render json: '{}', status: :unauthorized
     end
@@ -80,6 +80,14 @@ class CalendarsController < ApplicationController
 
     def set_calendar
         @calendar = Calendar.find(params[:id])
+    end
+
+    def update_calendar
+      if @calendar.update_attributes(calendar_params)
+        render "/calendars/show.json", status: :ok
+      else
+        render json: @calendar.errors, status: :unprocessable_entity
+      end
     end
 
 end
