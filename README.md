@@ -62,3 +62,45 @@ required keys:
 GET https://fierce-forest-56311.herokuapp.com/calendars
 
 api_token required
+
+
+## calendars#create
+
+POST	https://fierce-forest-56311.herokuapp.com/calendars
+
+api_token required
+
+required keys:
+* name (string) must exist
+* time_zone (string) must be valid time zone string (see documentation/valid_time_zones.txt)
+
+optional keys:
+* employee_hour_threshold_daily (float)
+* employee_hour_threshold_weekly (float)
+* daylight_savings (boolean)
+
+
+## calendars#show
+
+GET	https://fierce-forest-56311.herokuapp.com/calendars/:id
+
+api_token required (must be owner, manager, or employee of calendar)
+
+
+## calendars#update
+PATCH	https://fierce-forest-56311.herokuapp.com/calendars/:id
+
+api_token required (must be owner or manager of calendar)
+
+optional keys:
+* name (string) must exist
+* time_zone (string) must be valid time zone string (see documentation/valid_time_zones.txt)
+* employee_hour_threshold_daily (float)
+* employee_hour_threshold_weekly (float)
+* daylight_savings (boolean)
+
+
+## calendars#destroy
+DELETE	https://fierce-forest-56311.herokuapp.com/calendars/:id
+
+api_token required (must be owner of calendar)
