@@ -68,6 +68,7 @@ class CalendarsController < ApplicationController
     end
   end
 
+
   private
     
     def calendar_params

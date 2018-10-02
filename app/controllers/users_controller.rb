@@ -6,7 +6,7 @@ class UsersController < ApplicationController
     end
 
     def index
-        @calendar = Calendar.find(params[:calendar_id])
+        set_calendar
         if @calendar.employees.include?(current_user)
             render "/users/index.json", status: :ok
         elsif @calendar.managers.include?(current_user)
@@ -53,6 +53,10 @@ class UsersController < ApplicationController
 
     def set_user
         @user = User.find(params[:id])
+    end
+
+    def set_calendar
+        @calendar = Calendar.find(params[:calendar_id])
     end
 
 end
