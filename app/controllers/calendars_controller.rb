@@ -27,10 +27,15 @@ class CalendarsController < ApplicationController
 
   def show
     set_calendar
-    if @calendar.owners.include?(current_user) ||
-      @calendar.managers.include?(current_user) ||
-      @calendar.employees.include?(current_user)
-      render json: @calendar, status: :ok
+    if @calendar.owners.include?(current_user)
+      @role = "owner"
+      render "/calendars/show.json", status: :ok
+    elsif @calendar.managers.include?(current_user)
+      @role = "manager"
+      render "/calendars/show.json", status: :ok
+    elsif @calendar.employees.include?(current_user)
+      @role = "employee"
+      render "/calendars/show.json", status: :ok
     else
       render json: '{}', status: :unauthorized
     end
