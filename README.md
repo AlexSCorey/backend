@@ -97,3 +97,13 @@ optional keys:
 DELETE	https://fierce-forest-56311.herokuapp.com/calendars/:id
 
 api_token required (must be owner of calendar)
+
+
+## user_calendar_associations#remove (remove employee from schedule )
+DELETE https://fierce-forest-56311.herokuapp.com/calendars_employees
+
+api_token required (must be owner or manager of calendar)
+
+required keys:
+* user_id
+* calendar_id
