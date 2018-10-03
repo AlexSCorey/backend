@@ -21,10 +21,10 @@ class RolesController < ApplicationController
           render json: @role.errors, status: :unprocessable_entity
         end
       else
-        render json: '{}', status: :unauthorized
+        render json: ('You do not have access to this part of the site'), status: :unauthorized
       end
     else
-      render json: '{}', status: :unauthorized
+      render json: ('You do not have access to this part of the site'), status: :unauthorized
     end
   end
 
@@ -38,22 +38,22 @@ class RolesController < ApplicationController
 
     if @calendar.users.owners.include?(current_user)
       if @role.destroy
-        render json: '{}', status: :ok
+        render json: ('This role has been deleted!'), status: :ok
       else
         render json: @role.errors, status: :unprocessable_entity
       end
     elsif @calendar.users.managers.include?(current_user)
       if @role.role != "owner"
         if @role.destroy
-          render json: '{}', status: :ok
+          render json: ('This role has been deleted!'), status: :ok
         else
           render json: @role.errors, status: :unprocessable_entity
         end
       else
-        render json: '{}', status: :unauthorized
+        render json: ('You do not have access to this part of the site'), status: :unauthorized
       end
     else
-      render json: '{}', status: :unauthorized
+      render json: ('You do not have access to this part of the site'), status: :unauthorized
     end
   end
       

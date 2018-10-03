@@ -6,7 +6,7 @@ class UsersController < ApplicationController
     end
 
     def index
-        set_calendar
+        @calendar = Calendar.find(params[:calendar_id])
         if @calendar.users.include?(current_user)
             render "/users/index.json", status: :ok
         else
@@ -16,7 +16,6 @@ class UsersController < ApplicationController
 
     def create
         @user = User.new(user_params)
-
         if @user.save
             render "/users/create.json", status: :ok
         else
@@ -24,13 +23,8 @@ class UsersController < ApplicationController
         end
     end
 
-    def edit
-        set_user
-        render json: @user
-    end
-
     def update
-        set_user
+        @user = User.find(params[:id])
         if current_user.id != @user.id
             render json: @user.errors, status: :unauthorized
         elsif @user.update_attributes(user_params)
@@ -45,14 +39,6 @@ class UsersController < ApplicationController
     
     def user_params
         params.permit(:name, :email, :password, :phone_number)
-    end
-
-    def set_user
-        @user = User.find(params[:id])
-    end
-
-    def set_calendar
-        @calendar = Calendar.find(params[:calendar_id])
     end
 
 end
