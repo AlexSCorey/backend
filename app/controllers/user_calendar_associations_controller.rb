@@ -1,41 +1,36 @@
 class UserCalendarAssociationsController < ApplicationController
 
-    def remove
-       set_user
-       set_calendar
-       if      @calendar.owners.include?(current_user)
-            if      @calendar.employees.delete(@user)
-                    render json: '{}', status: :ok
-            end
-        elsif   @calendar.managers.include?(current_user)
-                @calendar.employees.delete(@user)
-                render json: '{}', status: :ok
-
-        else    render json: '{}', status: :unauthorized
-        
-        end
- 
-    end
-
-    def delete_manager
-        set_user
+    def create
         set_calendar
-        if  @calendar.owners.include?(current_user)
-            @calendar.managers.delete(@user)
-            render json: '{}', status: :ok
-        
-        else render json: '{}', status: :unauthorized
+        set_user
+        if @calendar.users.owners.include?(current_user)
+            Role.add(@user, @calendar, params[:role])
+        elsif @calendar.users.managers.include?(current_user)
+        @role = "manager"
+        update_calendar
+        else
+        render json: @role.errors, status: :unauthorized
         end
+    end
+
+    def update
+    end
+
+    def destroy
     end
         
 
-        private
-        def set_user
-            @user = User.find(params[:user_id])
-        end
+    private
+    def set_user
+        @user = User.find(params[:user_id])
+    end
 
-        def set_calendar
-            @calendar = Calendar.find(params[:calendar_id])
-        end
+    def set_calendar
+        @calendar = Calendar.find(params[:calendar_id])
+    end
+
+    def set_role
+        @role = Role.find(user_id: params[:user_id], calendar_id: params[:calendar_id])
+    end
 
 end

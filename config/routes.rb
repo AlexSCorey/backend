@@ -3,11 +3,10 @@ Rails.application.routes.draw do
 
 
   resources :calendars, only: [:index, :create, :show, :update, :destroy] do
-    resources :users, only: [:index]
+    resources :users, only: [:index] do
+      resource :role, only: [:create, :destroy]
+    end
   end
-
-  delete '/calendars_employees', to: 'user_calendar_associations#remove'
-  delete '/calendars_managers', to: 'user_calendar_associations#delete_manager'
 
   resources :users, only: [:create, :edit, :update]
 
