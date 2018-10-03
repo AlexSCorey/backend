@@ -59,7 +59,7 @@ CALENDARS = [
 CALENDARS.each do |calendar_source|
   users = User.all.shuffle()
   calendar = Calendar.create!(calendar_source)
-  calendar.owners.push(users.first)
-  calendar.managers.push(users.shift(2))
-  calendar.employees.push(users)
+  Role.add(users.first, calendar, "owner")
+  2.times {Role.add(users.shift, calendar, "manager")}
+  users.each{|u| Role.add(u, calendar, "employee")}
 end

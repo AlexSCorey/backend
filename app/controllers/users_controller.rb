@@ -7,11 +7,7 @@ class UsersController < ApplicationController
 
     def index
         set_calendar
-        if @calendar.employees.include?(current_user)
-            render "/users/index.json", status: :ok
-        elsif @calendar.managers.include?(current_user)
-            render "/users/index.json", status: :ok
-        elsif @calendar.owners.include?(current_user)
+        if @calendar.users.include?(current_user)
             render "/users/index.json", status: :ok
         else
             render json: ("You don't have access to this calendar"), status: :unauthorized

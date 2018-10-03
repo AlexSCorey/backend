@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_02_134410) do
+ActiveRecord::Schema.define(version: 2018_10_03_134139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,25 +25,14 @@ ActiveRecord::Schema.define(version: 2018_10_02_134410) do
     t.boolean "daylight_savings"
   end
 
-  create_table "calendars_employees", force: :cascade do |t|
-    t.bigint "calendar_id"
+  create_table "roles", force: :cascade do |t|
     t.bigint "user_id"
-    t.index ["calendar_id"], name: "index_calendars_employees_on_calendar_id"
-    t.index ["user_id"], name: "index_calendars_employees_on_user_id"
-  end
-
-  create_table "calendars_managers", force: :cascade do |t|
     t.bigint "calendar_id"
-    t.bigint "user_id"
-    t.index ["calendar_id"], name: "index_calendars_managers_on_calendar_id"
-    t.index ["user_id"], name: "index_calendars_managers_on_user_id"
-  end
-
-  create_table "calendars_owners", force: :cascade do |t|
-    t.bigint "calendar_id"
-    t.bigint "user_id"
-    t.index ["calendar_id"], name: "index_calendars_owners_on_calendar_id"
-    t.index ["user_id"], name: "index_calendars_owners_on_user_id"
+    t.string "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["calendar_id"], name: "index_roles_on_calendar_id"
+    t.index ["user_id"], name: "index_roles_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
