@@ -7,7 +7,7 @@ class CalendarsController < ApplicationController
       @employed_calendars = current_user.calendars.employed
       render "/calendars/index.json", status: :ok
     else
-      render json: '{}', status: :unauthorized
+      render json: ("You do not have access to this part of the site") , status: :unauthorized
     end
   end
 
@@ -22,7 +22,7 @@ class CalendarsController < ApplicationController
         render json: @calendar.errors, status: :unprocessable_entity
       end
     else
-      render json: '{}', status: :unauthorized
+      render json: ('You do not have access to this part of the site'), status: :unauthorized
     end
   end
 
@@ -38,7 +38,7 @@ class CalendarsController < ApplicationController
       @role = "employee"
       render "/calendars/show.json", status: :ok
     else
-      render json: '{}', status: :unauthorized
+      render json: ('You do not have access to this part of the site!'), status: :unauthorized
     end
   end
 
@@ -51,7 +51,7 @@ class CalendarsController < ApplicationController
       @role = "manager"
       update_calendar
     else
-      render json: '{}', status: :unauthorized
+      render json: ('You do not have access to this part of the site'), status: :unauthorized
     end
   end
 
@@ -59,12 +59,12 @@ class CalendarsController < ApplicationController
     set_calendar
     if @calendar.users.owners.include?(current_user)
       if @calendar.destroy
-        render json: '{}', status: :ok
+        render json: ('Calendar deleted!'), status: :ok
       else
         render json: @calendar.errors, status: :unprocessable_entity
       end
     else
-      render json: '{}', status: :unauthorized
+      render json: ('You do not have access to this part of the site'), status: :unauthorized
     end
   end
 
