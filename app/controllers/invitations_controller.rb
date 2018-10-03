@@ -79,12 +79,12 @@ class InvitationsController < ApplicationController
     @invitation = Invitation.new(user_id: @user.id)
     @invitation.save
     UserMailer.with(user: @user, invitation: @invitation).welcome_email.deliver_now
-    render json: '{}', status: :ok
+    render "/invitations/create.json", status: :ok
   end
 
   def existing_notification
     UserMailer.with(user: @user).added_email.deliver_now
-    render json: '{}', status: :ok
+    render "/invitations/create.json", status: :ok
   end
 
 end
