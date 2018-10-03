@@ -99,20 +99,19 @@ DELETE	https://fierce-forest-56311.herokuapp.com/calendars/:id
 api_token required (must be owner of calendar)
 
 
-## user_calendar_associations#remove (remove employee from schedule )
-DELETE https://fierce-forest-56311.herokuapp.com/calendars_employees
+## roles#destroy (remove user from calendar)
+DELETE	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/users/:user_id/role
 
-api_token required (must be owner or manager of calendar)
-
-required keys:
-* user_id
-* calendar_id
-
-## user_calendar_associations#delete_manager (remove manager from schedule)
-DELETE https://fierce-forest-56311.herokuapp.com/calendars_managers
-
-api_token required (must be owner of calendar)
+api_token required (owners of calendar permitted to remove owners, managers, and employees; managers of calendar permitted to remove managers and employees only)
 
 required keys:
-* user_id
-* calendar_id
+* role (string) must exist, must be "owner", "manager", or "employee"
+
+
+## roles#create (add user to calendar)
+POST	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/users/:user_id/role
+
+api_token required (owners of calendar permitted to add owners, managers, and employees; managers of calendar permitted to add managers and employees only)
+
+required keys:
+* role (string) must exist, must be "owner", "manager", or "employee", cannot duplicate existing user/calendar/role combination
