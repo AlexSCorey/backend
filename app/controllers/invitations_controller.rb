@@ -20,6 +20,10 @@ class InvitationsController < ApplicationController
     end
   end
 
+  def complete
+    
+  end
+
   private
 
   def set_calendar

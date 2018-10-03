@@ -2,11 +2,11 @@ class UserMailer < ApplicationMailer
   default from: 'GregorySDTaylor+SchedulingApp@gmail.com'
 
   def welcome_email
-    welcome_page = "https://scheduler-79e4e.firebaseapp.com/welcome"
+    welcome_page = "https://scheduler-79e4e.firebaseapp.com/welcome/"
     @user = params[:user]
     @calendar = params[:calendar]
     @invitation = params[:invitation]
-    @url  = welcome_page + '?token=' + params[:invitation].api_token
+    @url  = welcome_page + params[:invitation].api_token
     mail(to: @user.email, subject: 'Welcome to our Scheduling Site!')
   end
 

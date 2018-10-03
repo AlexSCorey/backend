@@ -9,6 +9,8 @@ Rails.application.routes.draw do
     end
   end
 
+  post 'invitations/complete', action: :complete, controller: 'invitations'
+
   resources :users, only: [:create, :edit, :update]
 
   resources :logins, only: [:create]
