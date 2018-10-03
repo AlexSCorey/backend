@@ -28,10 +28,33 @@ class RolesController < ApplicationController
     end
   end
 
-  def update
-  end
-
   def destroy
+    set_calendar
+    set_user
+
+    @role = Role.find_by(user_id: @user.id,
+      calendar_id: @calendar.id,
+      role: params[:role])
+
+    if @calendar.users.owners.include?(current_user)
+      if @role.destroy
+        render json: '{}', status: :ok
+      else
+        render json: @role.errors, status: :unprocessable_entity
+      end
+    elsif @calendar.users.managers.include?(current_user)
+      if @role.role != "owner"
+        if @role.destroy
+          render json: '{}', status: :ok
+        else
+          render json: @role.errors, status: :unprocessable_entity
+        end
+      else
+        render json: '{}', status: :unauthorized
+      end
+    else
+      render json: '{}', status: :unauthorized
+    end
   end
       
 
