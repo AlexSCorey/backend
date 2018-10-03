@@ -21,7 +21,22 @@ class InvitationsController < ApplicationController
   end
 
   def complete
-    
+    @invitation = current_invitation
+    if @invitation
+      @user = @invitation.user
+      if @user
+        if @user.update_attributes(user_params)
+          @invitation.destroy
+          render "/users/update.json", status: :ok
+        else
+          render json: @user.errors.messages, status: :unprocessable_entity
+        end
+      else
+        render json: '{}', status: :unprocessable_entity
+      end
+    else
+      render json: '{}', status: :unauthorized
+    end
   end
 
   private
@@ -89,6 +104,16 @@ class InvitationsController < ApplicationController
   def existing_notification
     UserMailer.with(user: @user, calendar: @calendar).added_email.deliver_now
     render "/invitations/create.json", status: :ok
+  end
+
+  def current_invitation
+    authenticate_with_http_token do |token, options|
+      return  Invitation.find_by_api_token(token)
+    end
+  end
+
+  def user_params
+    params.permit(:name, :password, :phone_number)
   end
 
 end

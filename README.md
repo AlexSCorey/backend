@@ -16,9 +16,9 @@ optional keys:
 
 
 
-## users#edit (update)
+## users#update
 
-POST https://fierce-forest-56311.herokuapp.com/users/:id
+PATCH https://fierce-forest-56311.herokuapp.com/users/:id
 
 api_token required
 
@@ -125,3 +125,16 @@ api_token required (owners of calendar permitted to add owners, managers, and em
 required keys:
 * email (string) must exist
 * role (string) must exist, must be "owner", "manager", or "employee", cannot duplicate existing user/calendar/role combination
+
+
+## invitations#complete (complete new user registration process)
+POST	/invitations/complete
+
+api_token required - use the invitation token from welcome email, not a user api_token
+
+required keys:
+* name
+* password, minimum length: 5
+
+optional keys:
+* phone_number
