@@ -2,15 +2,18 @@ class Calendar < ApplicationRecord
   validates :name, presence: true
   validate :time_zone_exists
 
-  has_and_belongs_to_many :owners,
-    class_name: "User",
-    join_table: "calendars_owners"
-  has_and_belongs_to_many :managers,
-    class_name: "User",
-    join_table: "calendars_managers"
-  has_and_belongs_to_many :employees,
-    class_name: "User",
-    join_table: "calendars_employees"
+  has_many :roles
+  has_many :users, through: :roles do
+    def owners
+        where("roles.role = 'owner'", true)
+    end
+    def managers
+        where("roles.role = 'manager'", true)
+    end
+    def employees
+        where("roles.role = 'employee'", true)
+    end
+  end
 
 
   private

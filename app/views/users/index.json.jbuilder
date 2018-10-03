@@ -1,9 +1,9 @@
-json.employees @calendar.employees do |e|
+json.employees @calendar.users.employees do |e|
     json.partial! 'users/userlist', user: e
 end
-json.managers @calendar.managers do |m|
+json.managers @calendar.users.managers do |m|
     json.partial! 'users/userlist', user: m
 end
-json.owners @calendar.owners do |o|
+json.owners @calendar.users.owners do |o|
     json.partial! 'users/userlist', user: o
 end
