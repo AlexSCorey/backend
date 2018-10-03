@@ -16,8 +16,6 @@ class UsersController < ApplicationController
 
     def create
         @user = User.new(user_params)
-        UserMailer.with(user: @user).test_email.deliver_now
-
         if @user.save
             render "/users/create.json", status: :ok
         else
