@@ -7,6 +7,7 @@ class Role < ApplicationRecord
   validates :role, presence: true
   validates :role, inclusion: { in: %w(owner manager employee),
     message: "%{value} is not a valid role" }
+  validates :role, uniqueness: { scope: [:user_id, :calendar_id] }
 
   def self.add(user, calendar, type)
     Role.new(user_id: user.id,
