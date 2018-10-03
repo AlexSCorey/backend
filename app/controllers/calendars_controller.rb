@@ -2,9 +2,9 @@ class CalendarsController < ApplicationController
 
   def index
     if current_user
-      @owned_calendars = current_user.owned_calendars
-      @managed_calendars = current_user.managed_calendars
-      @employed_calendars = current_user.employed_calendars
+      @owned_calendars = current_user.calendars.owned
+      @managed_calendars = current_user.calendars.managed
+      @employed_calendars = current_user.calendars.employed
       render "/calendars/index.json", status: :ok
     else
       render json: '{}', status: :unauthorized
@@ -15,7 +15,7 @@ class CalendarsController < ApplicationController
     if current_user
       @calendar = Calendar.new(calendar_params)
       if @calendar.save
-        @calendar.owners.push(current_user)
+        Role.add(current_user, @calendar, "owner")
         @role = "owner"
         render "/calendars/show.json", status: :ok
       else
@@ -28,13 +28,13 @@ class CalendarsController < ApplicationController
 
   def show
     set_calendar
-    if @calendar.owners.include?(current_user)
+    if @calendar.users.owners.include?(current_user)
       @role = "owner"
       render "/calendars/show.json", status: :ok
-    elsif @calendar.managers.include?(current_user)
+    elsif @calendar.users.managers.include?(current_user)
       @role = "manager"
       render "/calendars/show.json", status: :ok
-    elsif @calendar.employees.include?(current_user)
+    elsif @calendar.users.employees.include?(current_user)
       @role = "employee"
       render "/calendars/show.json", status: :ok
     else
@@ -44,10 +44,10 @@ class CalendarsController < ApplicationController
 
   def update
     set_calendar
-    if @calendar.owners.include?(current_user)
+    if @calendar.users.owners.include?(current_user)
       @role = "owner"
       update_calendar
-    elsif @calendar.managers.include?(current_user)
+    elsif @calendar.users.managers.include?(current_user)
       @role = "manager"
       update_calendar
     else
@@ -57,7 +57,7 @@ class CalendarsController < ApplicationController
 
   def destroy
     set_calendar
-    if @calendar.owners.include?(current_user)
+    if @calendar.users.owners.include?(current_user)
       if @calendar.destroy
         render json: '{}', status: :ok
       else
