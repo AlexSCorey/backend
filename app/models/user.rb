@@ -7,6 +7,7 @@ class User < ApplicationRecord
     validates :name, presence: true
 
     has_many :roles
+    has_one :invitation
     has_many :calendars, through: :roles do
         def owned
             where("roles.role = 'owner'", true)
@@ -18,5 +19,6 @@ class User < ApplicationRecord
             where("roles.role = 'employee'", true)
         end
     end
+
 
 end
