@@ -107,3 +107,12 @@ api_token required (must be owner or manager of calendar)
 required keys:
 * user_id
 * calendar_id
+
+## user_calendar_associations#delete_manager (remove manager from schedule)
+DELETE https://fierce-forest-56311.herokuapp.com/calendars_managers
+
+api_token required (must be owner of calendar)
+
+required keys:
+* user_id
+* calendar_id

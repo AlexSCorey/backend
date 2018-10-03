@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   end
 
   delete '/calendars_employees', to: 'user_calendar_associations#remove'
-
+  delete '/calendars_managers', to: 'user_calendar_associations#delete_manager'
 
   resources :users, only: [:create, :edit, :update]
 
