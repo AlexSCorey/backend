@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 2018_10_03_192520) do
     t.datetime "end_time"
     t.bigint "calendar_id"
     t.integer "capacity"
+    t.boolean "published"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["calendar_id"], name: "index_shifts_on_calendar_id"
