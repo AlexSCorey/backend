@@ -54,15 +54,6 @@ ActiveRecord::Schema.define(version: 2018_10_03_192520) do
     t.index ["calendar_id"], name: "index_shifts_on_calendar_id"
   end
 
-  create_table "user_shifts", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "shift_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["shift_id"], name: "index_user_shifts_on_shift_id"
-    t.index ["user_id"], name: "index_user_shifts_on_user_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "phone_number"
@@ -71,6 +62,15 @@ ActiveRecord::Schema.define(version: 2018_10_03_192520) do
     t.datetime "updated_at", null: false
     t.string "password_digest"
     t.string "api_token"
+  end
+
+  create_table "usershifts", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "shift_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["shift_id"], name: "index_usershifts_on_shift_id"
+    t.index ["user_id"], name: "index_usershifts_on_user_id"
   end
 
 end
