@@ -2,10 +2,11 @@ class ShiftsController < ApplicationController
 
     def create
         set_calendar
+        puts current_user.id
         if @calendar.users.owners.include?(current_user) || @calendar.users.managers.include?(current_user)
           @shift = Shift.new(shift_params)
             if @shift.save
-                render json: "/shifts/create.json", status: :ok
+                render "/shifts/create.json", status: :ok
             else
                 render json: @shift.errors
             end
@@ -22,7 +23,7 @@ class ShiftsController < ApplicationController
            else
               render json: @shift.errors, status: :uprocessable_entity
            end
-        else  render json: ("You don't have access to update shifts.")
+        else  render json: ("You don't have access to update shifts."), status: :unauthorized
         end
     end
 
