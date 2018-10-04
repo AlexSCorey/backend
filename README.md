@@ -117,6 +117,41 @@ required keys:
 * role (string) must exist, must be "owner", "manager", or "employee", cannot duplicate existing user/calendar/role combination
 
 
+
+## shifts#create (add shifts to calendar)
+POST    https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/shifts
+
+api_token required (must be owner or manager to create shift)
+
+required keys:
+* start_time
+* end_time
+* calendar_id
+
+
+## shifts#update (update shifts on calendar)
+PATCH    https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/shifts/:id
+
+api_token required (must be owner or manager to create shift)
+
+required keys:
+* id
+* calendar_id
+
+optional keys:
+* start_time
+* end_time
+
+
+## shifts#destroy (update shifts on calendar)
+DELETE    https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/shifts/:id
+
+api_token required (must be owner or manager to create shift)
+
+required keys:
+* id
+* calendar_id
+
 ## invitations#create (invite to calendar via email)
 POST	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/invitation	
 
@@ -138,3 +173,4 @@ required keys:
 
 optional keys:
 * phone_number
+
