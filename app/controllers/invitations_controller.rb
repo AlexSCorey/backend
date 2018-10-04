@@ -75,14 +75,14 @@ class InvitationsController < ApplicationController
     set_role
     if @access == "owner"
       if @role.save
-        @new_user? new_notification : existing_notification
+        @new_user ? new_notification : existing_notification
       else
         render json: @role.errors, status: :unprocessable_entity
       end
     elsif @access == "manager"
       if @role.role != "owner"
         if @role.save
-          @new_user? new_notification : existing_notification
+          @new_user ? new_notification : existing_notification
         else
           render json: @role.errors, status: :unprocessable_entity
         end
