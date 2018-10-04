@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
 
   resources :calendars, only: [:index, :create, :show, :update, :destroy] do
+    resources :shifts, only: [:create, :update, :destroy]
     resources :users, only: [:index] do
       resource :role, only: [:create, :destroy]
     end

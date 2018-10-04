@@ -6,7 +6,7 @@ class User < ApplicationRecord
     validates :password, presence: true, length: {minimum: 5}
     validates :name, presence: true
 
-    has_many :roles
+    has_many :shifts, through: :user_shifts
     has_many :calendars, through: :roles do
         def owned
             where("roles.role = 'owner'", true)
