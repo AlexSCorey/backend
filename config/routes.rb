@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       resource :role, only: [:create, :destroy]
     end
 
-    resources :notes, only: [:index, :create, :show, :update, :destroy]
+    resources :notes, only: [:index, :create]
 
   end
 
