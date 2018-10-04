@@ -18,6 +18,7 @@ class Shift < ApplicationRecord
             errors.add( :start_time, "Must be earlier than shift end time!")
         end
     end
+    
 
 
 
