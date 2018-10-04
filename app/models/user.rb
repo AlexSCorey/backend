@@ -7,7 +7,7 @@ class User < ApplicationRecord
     validates :name, presence: true
 
 
-    has_many :shifts, through: :user_shifts
+    has_many :shifts, through: :usershifts
 
     has_many :roles
     has_one :invitation
