@@ -68,6 +68,17 @@ class CalendarsController < ApplicationController
     end
   end
 
+  def invite
+    set_calendar
+    if @calendar.users.owners.include?(current_user)
+      # invite using email
+    elsif @calendar.users.managers.include?(current_user)
+      # invite using email, exclude owner role
+    else
+      render json: '{}', status: :unauthorized
+    end
+  end
+
 
   private
     
