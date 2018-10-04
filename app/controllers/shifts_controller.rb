@@ -5,7 +5,7 @@ class ShiftsController < ApplicationController
         if @calendar.users.owners.include?(current_user) || @calendar.users.managers.include?(current_user)
           @shift = Shift.new(shift_params)
             if @shift.save
-                render json: ('Shift created'), status: :ok
+                render json: "/shifts/create.json", status: :ok
             else
                 render json: @shift.errors
             end
@@ -13,6 +13,31 @@ class ShiftsController < ApplicationController
         end
     end
 
+    def update
+        set_calendar
+        set_shift
+        if @calendar.users.owners.include?(current_user) || @calendar.users.managers.include?(current_user)
+           if @shift.update_attributes(shift_params)
+              render "/shifts/update.json", status: :ok
+           else
+              render json: @shift.errors, status: :uprocessable_entity
+           end
+        else  render json: ("You don't have access to update shifts.")
+        end
+    end
+
+    def destroy
+        set_calendar
+        set_shift
+        if @calendar.users.owners.include?(current_user) || @calendar.users.managers.include?(current_user)
+            if @shift.destroy
+                render json: ("Shift deleted!"), status: :ok
+            else
+                render json: @shift.errors, status: :uprocessable_entity
+            end
+        else  render json: ("You don't have access to delete shifts.")
+        end
+    end
 
 
 
