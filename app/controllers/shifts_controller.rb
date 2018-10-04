@@ -2,7 +2,6 @@ class ShiftsController < ApplicationController
 
     def create
         set_calendar
-        puts current_user.id
         if @calendar.users.owners.include?(current_user) || @calendar.users.managers.include?(current_user)
           @shift = Shift.new(shift_params)
             if @shift.save

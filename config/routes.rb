@@ -4,7 +4,9 @@ Rails.application.routes.draw do
 
   resources :calendars, only: [:index, :create, :show, :update, :destroy] do
 
-    resources :shifts, only: [:create, :update, :destroy]
+    resources :shifts, only: [:create, :update, :destroy] do
+      resources :usershifts, only: [:create, :destroy]
+    end
 
     resource :invitation, only: [:create]
 
