@@ -5,6 +5,7 @@ class CreateShifts < ActiveRecord::Migration[5.2]
       t.datetime "end_time"
       t.belongs_to :calendar, index: true
       t.integer "capacity"
+      t.boolean "published"
   
       t.timestamps
     end

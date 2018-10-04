@@ -5,7 +5,7 @@ class ShiftsController < ApplicationController
         if @calendar.users.owners.include?(current_user) || @calendar.users.managers.include?(current_user)
           @shift = Shift.new(shift_params)
             if @shift.save
-                render json: "/shifts/create.json", status: :ok
+                render "/shifts/create.json", status: :ok
             else
                 render json: @shift.errors
             end
@@ -53,6 +53,6 @@ class ShiftsController < ApplicationController
 
 
     def shift_params
-        params.permit(:start_time, :end_time, :calendar_id)
+        params.permit(:start_time, :end_time, :calendar_id, :capacity, :published)
     end
 end
