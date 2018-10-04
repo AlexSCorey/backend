@@ -152,6 +152,25 @@ required keys:
 * id
 * calendar_id
 
+## usershifts#create (add employee to a shift)
+POST     https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/shifts/:id/usershifts
+
+api_token required (must be owner or manager to create employee shift)
+
+required keys:
+* user_id
+* shift_id
+
+## usershifts#create (add employee to a shift)
+DELETE     https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/shifts/:id/usershifts/:id
+
+api_token required (must be owner or manager to delete employee shift)
+
+required keys:
+* user_id
+* shift_id
+
+
 ## invitations#create (invite to calendar via email)
 POST	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/invitation	
 
