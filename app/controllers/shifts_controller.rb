@@ -2,10 +2,16 @@ class ShiftsController < ApplicationController
 
     def index
         set_calendar
-        set_shift
         @shifts = Shift.all
+        @publishedshifts = @shifts.where(published: true)
         if @calendar.users.owners.include?(current_user) || @calendar.users.managers.include?(current_user)
-            if @shift.where(published: true)
+            render "/shifts/index.json", status: :ok
+        elsif 
+            @calendar.users.include?(current_user)
+            render "/shifts/index2.json", status: :ok
+        else
+            render json: ('You do not have access to these shifts'), status: :unauthorized
+        end
     end
 
     def create
