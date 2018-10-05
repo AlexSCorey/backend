@@ -29,9 +29,10 @@ class SwapsController < ApplicationController
   def update
     set_swap
     @user = current_user
-    if @calendar.users.include?(current_user)
+    if @swap.shift.calendar.users.include?(current_user)
       if !@swap.accepting_user_id
         if @swap.update_attributes(accepting_user_id: @user.id)
+          UserMailer.with(swap: @swap).swap_complete_email.deliver_now
           render "/swaps/update.json", status: :ok
         else
           render json: @swap.errors, status: :unprocessable_entity

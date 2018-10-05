@@ -17,4 +17,12 @@ class UserMailer < ApplicationMailer
     mail(to: @user.email, subject: "You've been added to a new calendar on shiftwerk!")
   end
 
+  def swap_complete_email
+    complete_page = "https://scheduler-79e4e.firebaseapp.com/complete/"
+    @swap = params[:swap]
+    @managers = params[:swap].shift.calendar.users.managers
+    @url = complete_page + params[:swap].api_token
+    mail(to: @managers.map{|m| m.email}, subject: "shift swap pending approval")
+  end
+
 end
