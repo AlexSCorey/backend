@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   resources :calendars, only: [:index, :create, :show, :update, :destroy] do
 
-    resources :shifts, only: [:create, :update, :destroy] do
+    resources :shifts, only: [:index, :create, :update, :destroy] do
       resources :usershifts, only: [:create, :destroy]
     end
 
@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
     resources :users, only: [:index] do
       resource :role, only: [:create, :destroy]
+      resources :shifts, only: [:index]
     end
 
     resources :notes, only: [:index, :create]
