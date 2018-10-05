@@ -3,4 +3,5 @@ class Swap < ApplicationRecord
   belongs_to :shift
   belongs_to :requesting_user, class_name: "User"
   belongs_to :accepting_user, class_name: "User", optional: true
+  validates :requesting_user_id, uniqueness: { scope: [:shift_id] }
 end

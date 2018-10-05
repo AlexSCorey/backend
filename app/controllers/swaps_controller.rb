@@ -7,7 +7,7 @@ class SwapsController < ApplicationController
       @swap = Swap.new(requesting_user_id: @user.id,
         shift_id: @shift.id)
       if @swap.save
-        render json: @swap, status: :ok
+        render "/swaps/create.json", status: :ok
       else
         render json: @swap.errors, status: :unprocessable_entity
       end
