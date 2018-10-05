@@ -27,6 +27,21 @@ class SwapsController < ApplicationController
   end
 
   def update
+    set_swap
+    @user = current_user
+    if @calendar.users.include?(current_user)
+      if !@swap.accepting_user_id
+        if @swap.update_attributes(accepting_user_id: @user.id)
+          render "/swaps/update.json", status: :ok
+        else
+          render json: @swap.errors, status: :unprocessable_entity
+        end
+      else
+        render json: {error: "swap already accepted"}, status: :unprocessable_entity
+      end
+    else
+      render json: '{}', status: :unauthorized
+    end
   end
 
   def complete
@@ -40,6 +55,10 @@ class SwapsController < ApplicationController
 
   def set_shift
     @shift = Shift.find(params[:shift_id])
+  end
+
+  def set_swap
+    @swap = Swap.find(params[:id])
   end
 
 end
