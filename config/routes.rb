@@ -4,7 +4,10 @@ Rails.application.routes.draw do
 
   resources :calendars, only: [:index, :create, :show, :update, :destroy] do
 
+    resources :swaps, only: [:index, :update]
+
     resources :shifts, only: [:create, :update, :destroy] do
+      resources :swaps, only: [:create]
       resources :usershifts, only: [:create, :destroy]
     end
 
@@ -19,6 +22,7 @@ Rails.application.routes.draw do
   end
 
   post 'invitations/complete', action: :complete, controller: 'invitations'
+  post 'swaps/complete', action: :complete, controller: 'swaps'
 
   resources :users, only: [:create, :edit, :update]
 
