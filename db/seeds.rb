@@ -64,6 +64,35 @@ CALENDARS.each do |calendar_source|
   users.each{|u| Role.add(u, calendar, "employee")}
 end
 
+NOTE_TEXT = [
+  "there is going to be a parade on this day, watch out for crowds",
+  "I'll be on vacation in Hawaii on this day",
+  "there will be construction on the street this day, it might be slow",
+  "I'm expecting a large delivery on this day",
+  "watch for an internet technition around 3pm on this day",
+  "I may have to leave early on this day",
+  "I've got a great feeling about this day",
+  "this is my birthday!",
+  "please schedule me for as many hours as possible on this day",
+  "I'm probably going to be late on this day"
+]
+
+Calendar.all.each do |calendar|
+  users = calendar.users
+  date_index = Date.today - 100
+  200.times do
+    Random.rand(4).times do
+      Note.new(
+        user_id: users.sample.id,
+        calendar_id: calendar.id,
+        text: NOTE_TEXT.sample,
+        date: date_index
+      ).save
+    end
+    date_index += 1
+  end
+end
+
 SHIFTS = [
   {start_time: "2018-10-5 08:00",
     end_time: "2018-10-5 16:00",

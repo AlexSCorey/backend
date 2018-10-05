@@ -23,6 +23,7 @@ class User < ApplicationRecord
             where("roles.role = 'employee'", true)
         end
     end
+    has_many :notes
 
 
 end

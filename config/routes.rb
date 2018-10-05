@@ -13,6 +13,9 @@ Rails.application.routes.draw do
     resources :users, only: [:index] do
       resource :role, only: [:create, :destroy]
     end
+
+    resources :notes, only: [:index, :create]
+
   end
 
   post 'invitations/complete', action: :complete, controller: 'invitations'

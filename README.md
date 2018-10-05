@@ -187,7 +187,7 @@ required keys:
 
 
 ## invitations#complete (complete new user registration process)
-POST	/invitations/complete
+POST	https://fierce-forest-56311.herokuapp.com/invitations/complete
 
 api_token required - use the invitation token from welcome email, not a user api_token
 
@@ -198,3 +198,20 @@ required keys:
 optional keys:
 * phone_number
 
+
+## notes#index
+GET	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/notes?start_date=:start_date&end_date=:end_date
+
+api_token required - must be user of calendar, managers and owners will get all notes, employees will get only their notes
+
+query string required: the arguments in the URL are strictly required for this index to limit notes to a specific date range.  Replace :start_date and :end_date with the appropriate dates and times, e.g.: ?start_date=2018-06-30&end_date=2018-07-06
+
+
+## notes#create
+POST	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/notes
+
+api_token required - must be user associated with calendar
+
+required keys:
+* text (string)
+* date (whole date only, e.g. 2018-10-06)
