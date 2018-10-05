@@ -91,6 +91,8 @@ Calendar.all.each do |calendar|
     end
     date_index += 1
   end
+end
+
 SHIFTS = [
   {start_time: "2018-10-5 08:00",
     end_time: "2018-10-5 16:00",
