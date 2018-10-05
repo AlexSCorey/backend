@@ -118,6 +118,11 @@ required keys:
 
 
 
+## shifts#index (index of shifts based on role)
+GET     https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/shifts
+
+api_token required (must be owner or manager to view all shifts, must be employee to view published shifts)
+
 ## shifts#create (add shifts to calendar)
 POST    https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/shifts
 
