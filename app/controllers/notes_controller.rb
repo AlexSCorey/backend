@@ -5,9 +5,12 @@ class NotesController < ApplicationController
     set_calendar
     if @calendar.users.owners.include?(@user) ||
       @calendar.users.managers.include?(@user)
+      @notes = Note.where(calendar_id: @calendar.id)
+      render "/notes/index.json", status: :ok
+    elsif @calendar.users.employees.include?(@user)
       @notes = Note.where(calendar_id: @calendar.id,
         user_id: @user.id)
-      render "/notes/index.json", status: :ok
+        render "/notes/index.json", status: :ok
     else
       render json: '{}', status: :unauthorized
     end
