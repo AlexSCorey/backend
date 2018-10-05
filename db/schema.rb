@@ -33,6 +33,17 @@ ActiveRecord::Schema.define(version: 2018_10_05_144142) do
     t.index ["user_id"], name: "index_invitations_on_user_id"
   end
 
+  create_table "notes", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "calendar_id"
+    t.string "text"
+    t.date "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["calendar_id"], name: "index_notes_on_calendar_id"
+    t.index ["user_id"], name: "index_notes_on_user_id"
+  end
+
   create_table "roles", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "calendar_id"
