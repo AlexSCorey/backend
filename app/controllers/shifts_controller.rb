@@ -1,5 +1,6 @@
 class ShiftsController < ApplicationController
 
+
     def index
         set_calendar
         @shifts = Shift.all
@@ -13,6 +14,7 @@ class ShiftsController < ApplicationController
             render json: ('You do not have access to these shifts'), status: :unauthorized
         end
     end
+
 
     def create
         set_calendar
