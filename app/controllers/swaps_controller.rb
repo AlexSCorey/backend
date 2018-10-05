@@ -46,6 +46,30 @@ class SwapsController < ApplicationController
   end
 
   def complete
+    @swap = current_swap
+    case params[:decision]
+    when "accept"
+      Usershift.find_by(user_id: @swap.requesting_user_id,
+        shift_id: @swap.shift_id).destroy
+      @usershift = Usershift.new(user_id: @swap.accepting_user_id,
+        shift_id: @swap.shift_id)
+      if @usershift.save
+        @swap.destroy
+        #send accept email
+        render json: @usershift, status: :ok
+      else
+        render json: @usershift.errors, status: :unprocessable_entity
+      end
+    when "deny"
+      @accepting_user = @swap.accepting_user
+      @swap.accepting_user_id = nil
+      if @swap.save
+        render json: {error: "swap denied"}, status: :ok
+        #send denial email
+      else
+        render json: @swap.errors, status: :unprocessable_entity
+      end
+    end
   end
 
   private
@@ -60,6 +84,12 @@ class SwapsController < ApplicationController
 
   def set_swap
     @swap = Swap.find(params[:id])
+  end
+
+  def current_swap
+    authenticate_with_http_token do |token, options|
+      return  Swap.find_by_api_token(token)
+    end
   end
 
 end
