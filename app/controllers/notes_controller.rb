@@ -3,16 +3,23 @@ class NotesController < ApplicationController
   def index
     set_user
     set_calendar
-    if @calendar.users.owners.include?(@user) ||
-      @calendar.users.managers.include?(@user)
-      @notes = Note.where(calendar_id: @calendar.id)
-      render "/notes/index.json", status: :ok
-    elsif @calendar.users.employees.include?(@user)
-      @notes = Note.where(calendar_id: @calendar.id,
-        user_id: @user.id)
+
+    if params["start_date"] && params["end_date"]
+      if @calendar.users.owners.include?(@user) ||
+        @calendar.users.managers.include?(@user)
+        @notes = Note.where(calendar_id: @calendar.id,
+          date: params["start_date"]..params["end_date"])
         render "/notes/index.json", status: :ok
+      elsif @calendar.users.employees.include?(@user)
+        @notes = Note.where(calendar_id: @calendar.id,
+          user_id: @user.id,
+          date: params["start_date"]..params["end_date"])
+          render "/notes/index.json", status: :ok
+      else
+        render json: '{}', status: :unauthorized
+      end
     else
-      render json: '{}', status: :unauthorized
+      render json: {'error': 'start date and end date are required'}, status: :unprocessable_entity
     end
   end
   
