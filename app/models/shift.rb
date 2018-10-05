@@ -1,4 +1,5 @@
 class Shift < ApplicationRecord
+    has_many :usershifts
     has_many :users, through: :usershifts
     has_many :swaps
     belongs_to :calendar

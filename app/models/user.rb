@@ -6,7 +6,7 @@ class User < ApplicationRecord
     validates :password, presence: true, length: {minimum: 5}
     validates :name, presence: true
 
-
+    has_many :usershifts
     has_many :shifts, through: :usershifts
 
     has_many :roles
