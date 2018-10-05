@@ -1,5 +1,13 @@
 class ShiftsController < ApplicationController
 
+    def index
+        set_calendar
+        set_shift
+        @shifts = Shift.all
+        if @calendar.users.owners.include?(current_user) || @calendar.users.managers.include?(current_user)
+            if @shift.where(published: true)
+    end
+
     def create
         set_calendar
         if @calendar.users.owners.include?(current_user) || @calendar.users.managers.include?(current_user)
