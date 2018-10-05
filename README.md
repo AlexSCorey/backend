@@ -124,9 +124,11 @@ POST    https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/shifts
 api_token required (must be owner or manager to create shift)
 
 required keys:
-* start_time
-* end_time
+* start_time (must be earlier than end time)
+* end_time  (must be after start time)
 * calendar_id
+* capacity (must be greater than 0)
+* published (boolean)
 
 
 ## shifts#update (update shifts on calendar)
@@ -141,6 +143,8 @@ required keys:
 optional keys:
 * start_time
 * end_time
+* capacity
+* published
 
 
 ## shifts#destroy (update shifts on calendar)
@@ -169,6 +173,7 @@ api_token required (must be owner or manager to delete employee shift)
 required keys:
 * user_id
 * shift_id
+* calendar
 
 
 ## invitations#create (invite to calendar via email)
