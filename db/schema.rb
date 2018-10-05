@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_04_204806) do
+ActiveRecord::Schema.define(version: 2018_10_05_144142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,18 +59,10 @@ ActiveRecord::Schema.define(version: 2018_10_04_204806) do
     t.datetime "end_time"
     t.bigint "calendar_id"
     t.integer "capacity"
+    t.boolean "published"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["calendar_id"], name: "index_shifts_on_calendar_id"
-  end
-
-  create_table "user_shifts", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "shift_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["shift_id"], name: "index_user_shifts_on_shift_id"
-    t.index ["user_id"], name: "index_user_shifts_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -81,6 +73,15 @@ ActiveRecord::Schema.define(version: 2018_10_04_204806) do
     t.datetime "updated_at", null: false
     t.string "password_digest"
     t.string "api_token"
+  end
+
+  create_table "usershifts", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "shift_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["shift_id"], name: "index_usershifts_on_shift_id"
+    t.index ["user_id"], name: "index_usershifts_on_user_id"
   end
 
 end

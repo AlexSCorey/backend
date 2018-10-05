@@ -91,4 +91,49 @@ Calendar.all.each do |calendar|
     end
     date_index += 1
   end
+SHIFTS = [
+  {start_time: "2018-10-5 08:00",
+    end_time: "2018-10-5 16:00",
+    calendar_id: 1,
+    capacity: 5,
+    published: false},
+  {start_time: "2018-10-5 16:00",
+    end_time: "2018-10-5 23:00",
+    calendar_id: 1, 
+    capacity: 8,
+    published: false},
+  {start_time: "2018-10-5 10:00",
+    end_time: "2018-10-5 14:00",
+    calendar_id: 1,
+    capacity: 3,
+    published: false},
+  {start_time: "2018-10-5 18:00",
+    end_time: "2018-10-5 22:00",
+    calendar_id: 1, 
+    capacity: 3,
+    published: false},
+    {start_time: "2018-10-5 06:00",
+    end_time: "2018-10-5 14:00",
+    calendar_id: 2,
+    capacity: 6,
+    published: true},
+  {start_time: "2018-10-5 14:00",
+    end_time: "2018-10-5 22:00",
+    calendar_id: 2, 
+    capacity: 8,
+    published: false},
+  {start_time: "2018-10-5 10:00",
+    end_time: "2018-10-5 14:00",
+    calendar_id: 2,
+    capacity: 3,
+    published: false},
+  {start_time: "2018-10-5 18:00",
+    end_time: "2018-10-5 22:00",
+    calendar_id: 2, 
+    capacity: 3,
+    published: false},
+]
+
+SHIFTS.each do |shift|
+  Shift.create!(shift)
 end
