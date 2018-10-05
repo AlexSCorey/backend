@@ -9,7 +9,7 @@ class ShiftsController < ApplicationController
             render "/shifts/index.json", status: :ok
         elsif 
             @calendar.users.include?(current_user)
-            render "/shifts/index2.json", status: :ok
+            render json: @publishedshifts, status: :ok
         else
             render json: ('You do not have access to these shifts'), status: :unauthorized
         end
