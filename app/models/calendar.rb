@@ -15,6 +15,8 @@ class Calendar < ApplicationRecord
     end
   end
   has_many :notes
+  has_many :shifts
+  has_many :swaps, through: :shifts
 
 
   private

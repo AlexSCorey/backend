@@ -17,6 +17,13 @@ class SwapsController < ApplicationController
   end
   
   def index
+    set_calendar
+    if @calendar.users.include?(current_user)
+      @swaps = @calendar.swaps
+      render "/swaps/index.json", status: :ok
+    else
+      render json: '{}', status: :unauthorized
+    end
   end
 
   def update
