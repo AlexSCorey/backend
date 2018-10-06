@@ -17,4 +17,10 @@ class UserMailer < ApplicationMailer
     mail(to: @user.email, subject: "You've been added to a new calendar on shiftwerk!")
   end
 
+  def forgot_password
+    @user = params[:user]
+    @url = "https://schedule-79e4e.firebaseapp.com/password/reset"
+    mail(to: @user.email, subject: "Password Reset Instructions")
+  end
+
 end

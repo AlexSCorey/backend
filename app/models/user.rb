@@ -25,5 +25,18 @@ class User < ApplicationRecord
     end
     has_many :notes
 
+    def generate_password_token!
+        self.reset_password_token = generate_token
+    end
 
+    def reset_password!(password)
+        self.reset_password_token = nil
+        self.password = password
+    end
+
+    private
+
+    def generate_token
+        SecureRandom.hex(10)
+    end
 end

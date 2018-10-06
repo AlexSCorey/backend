@@ -25,5 +25,8 @@ Rails.application.routes.draw do
 
   resources :logins, only: [:create]
 
+  post 'password/forgot', to: 'password#forgot'
+  post 'password/reset', to: 'password#reset'
+
   
 end
