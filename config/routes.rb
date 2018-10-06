@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   resources :calendars, only: [:index, :create, :show, :update, :destroy] do
 
+    get '/summary', action: :summary, controller: 'calendars'
+
     resources :shifts, only: [:index, :create, :update, :destroy] do
       resources :usershifts, only: [:create, :destroy]
     end
