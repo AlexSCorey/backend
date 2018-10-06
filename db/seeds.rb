@@ -100,8 +100,8 @@ BOOLEANS = [true, false]
 
 Calendar.all.each do |calendar|
   users = calendar.users
-  date_index = Date.today - 100
-  200.times do
+  date_index = Date.today - 50
+  100.times do
     Random.rand(4).times do
       start_time = DateTime.new(
         date_index.year,
@@ -110,13 +110,24 @@ Calendar.all.each do |calendar|
         SHIFT_HOURS.sample,
         SHIFT_MINUTES.sample)
       end_time = start_time.advance(hours: SHIFT_DURATIONS.sample)
-      Shift.new(
+      shift = Shift.new(
         start_time: start_time,
         end_time: end_time,
         calendar_id: 1,
         capacity: rand(10),
         published: BOOLEANS.sample
-      ).save
+      )
+      shift.save
+      users.each do |user|
+        if shift.users.length < shift.capacity
+          if BOOLEANS.sample
+            Usershift.new(
+              user_id: user.id,
+              shift_id: shift.id
+            ).save
+          end
+        end
+      end
     end
     date_index += 1
   end
