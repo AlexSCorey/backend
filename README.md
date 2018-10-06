@@ -220,3 +220,12 @@ api_token required - must be user associated with calendar
 required keys:
 * text (string)
 * date (whole date only, e.g. 2018-10-06)
+
+
+## calendars#summary
+GET	/calendars/:calendar_id/summary?start_date=:start_date&end_date=:end_date
+
+api_token required - must be user of calendar
+
+query string required: the arguments in the URL are strictly required for this summary to limit for a specific date range.  Replace :start_date and :end_date with the appropriate dates and times, e.g.: ?start_date=2018-06-30&end_date=2018-07-06
+
