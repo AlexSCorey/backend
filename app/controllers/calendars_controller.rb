@@ -13,17 +13,11 @@ class CalendarsController < ApplicationController
 
   def summary
     @user = current_user
-    @calendar = Calendar.find(params[:id])
+    @calendar = Calendar.find(params[:calendar_id])
 
     if params["start_date"] && params["end_date"]
-      if @calendar.users.owners.include?(@user) ||
-        @calendar.users.managers.include?(@user)
-        
-        render "/calendar/summary.json", status: :ok
-      elsif @calendar.users.employees.include?(@user)
-        @notes = Note.where(calendar_id: @calendar.id,
-          
-        render "/calendar/summary.json", status: :ok
+      if @calendar.users.include?(@user)
+        render json: @calendar.sql_summary_query(params["start_date"], params["end_date"])
       else
         render json: '{}', status: :unauthorized
       end
