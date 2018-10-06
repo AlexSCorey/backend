@@ -132,3 +132,11 @@ Calendar.all.each do |calendar|
     date_index += 1
   end
 end
+
+Usershift.all.each do |usershift|
+  if usershift.id % 11 == 0 &&
+    usershift.shift.start_time > DateTime.now
+    Swap.new(requesting_user_id: usershift.user_id,
+      shift_id: usershift.shift_id).save
+  end
+end
