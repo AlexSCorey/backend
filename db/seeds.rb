@@ -93,49 +93,78 @@ Calendar.all.each do |calendar|
   end
 end
 
-SHIFTS = [
-  {start_time: "2018-10-5 08:00",
-    end_time: "2018-10-5 16:00",
-    calendar_id: 1,
-    capacity: 5,
-    published: false},
-  {start_time: "2018-10-5 16:00",
-    end_time: "2018-10-5 23:00",
-    calendar_id: 1, 
-    capacity: 8,
-    published: false},
-  {start_time: "2018-10-5 10:00",
-    end_time: "2018-10-5 14:00",
-    calendar_id: 1,
-    capacity: 3,
-    published: false},
-  {start_time: "2018-10-5 18:00",
-    end_time: "2018-10-5 22:00",
-    calendar_id: 1, 
-    capacity: 3,
-    published: false},
-    {start_time: "2018-10-5 06:00",
-    end_time: "2018-10-5 14:00",
-    calendar_id: 2,
-    capacity: 6,
-    published: true},
-  {start_time: "2018-10-5 14:00",
-    end_time: "2018-10-5 22:00",
-    calendar_id: 2, 
-    capacity: 8,
-    published: false},
-  {start_time: "2018-10-5 10:00",
-    end_time: "2018-10-5 14:00",
-    calendar_id: 2,
-    capacity: 3,
-    published: false},
-  {start_time: "2018-10-5 18:00",
-    end_time: "2018-10-5 22:00",
-    calendar_id: 2, 
-    capacity: 3,
-    published: false},
-]
+SHIFT_HOURS = (1..23).to_a
+SHIFT_MINUTES = [0,15,30,45]
+SHIFT_DURATIONS = [2,4,8,9,12]
+BOOLEANS = [true, false]
 
-SHIFTS.each do |shift|
-  Shift.create!(shift)
+Calendar.all.each do |calendar|
+  users = calendar.users
+  date_index = Date.today - 100
+  200.times do
+    Random.rand(4).times do
+      start_time = DateTime.new(
+        date_index.year,
+        date_index.month,
+        date_index.day,
+        SHIFT_HOURS.sample,
+        SHIFT_MINUTES.sample)
+      end_time = start_time.advance(hours: SHIFT_DURATIONS.sample)
+      Shift.new(
+        start_time: start_time,
+        end_time: end_time,
+        calendar_id: 1,
+        capacity: rand(10),
+        published: BOOLEANS.sample
+      ).save
+    end
+    date_index += 1
+  end
 end
+
+# SHIFTS = [
+#   {start_time: "2018-10-5 08:00",
+#     end_time: "2018-10-5 16:00",
+#     calendar_id: 1,
+#     capacity: 5,
+#     published: false},
+#   {start_time: "2018-10-5 16:00",
+#     end_time: "2018-10-5 23:00",
+#     calendar_id: 1, 
+#     capacity: 8,
+#     published: false},
+#   {start_time: "2018-10-5 10:00",
+#     end_time: "2018-10-5 14:00",
+#     calendar_id: 1,
+#     capacity: 3,
+#     published: false},
+#   {start_time: "2018-10-5 18:00",
+#     end_time: "2018-10-5 22:00",
+#     calendar_id: 1, 
+#     capacity: 3,
+#     published: false},
+#     {start_time: "2018-10-5 06:00",
+#     end_time: "2018-10-5 14:00",
+#     calendar_id: 2,
+#     capacity: 6,
+#     published: true},
+#   {start_time: "2018-10-5 14:00",
+#     end_time: "2018-10-5 22:00",
+#     calendar_id: 2, 
+#     capacity: 8,
+#     published: false},
+#   {start_time: "2018-10-5 10:00",
+#     end_time: "2018-10-5 14:00",
+#     calendar_id: 2,
+#     capacity: 3,
+#     published: false},
+#   {start_time: "2018-10-5 18:00",
+#     end_time: "2018-10-5 22:00",
+#     calendar_id: 2, 
+#     capacity: 3,
+#     published: false},
+# ]
+
+# SHIFTS.each do |shift|
+#   Shift.create!(shift)
+# end
