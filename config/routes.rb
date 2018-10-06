@@ -6,7 +6,9 @@ Rails.application.routes.draw do
 
     resources :swaps, only: [:index, :update]
 
-    resources :shifts, only: [:create, :update, :destroy] do
+    get '/summary', action: :summary, controller: 'calendars'
+
+    resources :shifts, only: [:index, :create, :update, :destroy] do
       resources :swaps, only: [:create]
       resources :usershifts, only: [:create, :destroy]
     end
@@ -15,6 +17,7 @@ Rails.application.routes.draw do
 
     resources :users, only: [:index] do
       resource :role, only: [:create, :destroy]
+      resources :shifts, only: [:index]
     end
 
     resources :notes, only: [:index, :create]

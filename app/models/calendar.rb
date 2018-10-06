@@ -18,6 +18,33 @@ class Calendar < ApplicationRecord
   has_many :shifts
   has_many :swaps, through: :shifts
 
+  def sql_summary_query(start_date, end_date)
+    # this query should be rewritten to sanitize inputs
+    sql = %Q|SELECT
+date_trunc('day', shifts.start_time) AS "Day",
+COUNT(shifts.id) AS "total_shifts",
+SUM(shifts.capacity) AS "total_capacity",
+SUM(usershift_query.usershift_count) AS "total_assigned_capacity",
+COUNT(shifts.id) FILTER (WHERE published=true) AS "published_shifts",
+SUM(shifts.capacity) FILTER (WHERE published=true) AS "published_capacity",
+SUM(usershift_query.usershift_count) FILTER (WHERE published=true) AS "pulished_assigned_capacity",
+COUNT(shifts.id) FILTER (WHERE published=false) AS "unpublished_shifts",
+SUM(shifts.capacity) FILTER (WHERE published=false) AS "unpublished_capacity",
+SUM(usershift_query.usershift_count) FILTER (WHERE published=false) AS "unpulished_assigned_capacity"
+FROM shifts
+LEFT JOIN
+(SELECT usershifts.shift_id,
+COUNT (usershifts.id) AS "usershift_count"
+FROM usershifts
+GROUP BY usershifts.shift_id) AS "usershift_query"
+ON (shifts.id = usershift_query.shift_id)
+WHERE shifts.calendar_id=| + self.id.to_s + %Q|
+AND date_trunc('day', shifts.start_time) BETWEEN '| +
+start_date + %Q|' AND '| + end_date + %Q|'
+GROUP BY 1 
+ORDER BY 1|
+    return ActiveRecord::Base.connection.execute(sql)
+  end
 
   private
 

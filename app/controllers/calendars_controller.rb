@@ -11,6 +11,21 @@ class CalendarsController < ApplicationController
     end
   end
 
+  def summary
+    @user = current_user
+    @calendar = Calendar.find(params[:calendar_id])
+
+    if params["start_date"] && params["end_date"]
+      if @calendar.users.include?(@user)
+        render json: @calendar.sql_summary_query(params["start_date"], params["end_date"])
+      else
+        render json: '{}', status: :unauthorized
+      end
+    else
+      render json: {'error': 'start date and end date are required'}, status: :unprocessable_entity
+    end
+  end
+
   def create
     if current_user
       @calendar = Calendar.new(calendar_params)
