@@ -25,4 +25,15 @@ class UserMailer < ApplicationMailer
     mail(to: @managers.map{|m| m.email}, subject: "shift swap pending approval")
   end
 
+  def swap_approved_email
+    @swap = params[:swap]
+    mail(to: @managers.map{|m| m.email}, subject: "shift swap approved")
+  end
+
+  def swap_denied_email
+    @swap = params[:swap]
+    @accepting_user = params[:accepting_user]
+    mail(to: @managers.map{|m| m.email}, subject: "shift swap denied")
+  end
+
 end
