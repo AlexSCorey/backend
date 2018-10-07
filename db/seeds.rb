@@ -8,22 +8,22 @@
 
 USERS = [
   {name: "Greg Taylor",
-    email: "greguser@doesnotexist.com",
+    email: "shiftgear+greg@googlegroups.com",
     password: "gregpassword",
     phone_number: "123-456-7890"
   },
   {name: "Sohel Patel",
-    email: "soheluser@doesnotexist.com",
+    email: "shiftgear+sohel@googlegroups.com",
     password: "sohelpassword",
     phone_number: "123-456-7890"
   },
   {name: "Alex Corey",
-    email: "alexuser@doesnotexist.com",
+    email: "shiftgear+alex@googlegroups.com",
     password: "alexpassword",
     phone_number: "123-456-7890"
   },
   {name: "Michael Bond",
-    email: "mikeuser@doesnotexist.com",
+    email: "shiftgear+mike@googlegroups.com",
     password: "mikepassword",
     phone_number: "123-456-7890"
   },
