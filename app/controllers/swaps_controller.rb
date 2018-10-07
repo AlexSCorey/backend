@@ -54,7 +54,9 @@ class SwapsController < ApplicationController
       @usershift = Usershift.new(user_id: @swap.accepting_user_id,
         shift_id: @swap.shift_id)
       if @usershift.save
-        UserMailer.with(swap: @swap).swap_approve_email.deliver_now
+        UserMailer.with(swap: @swap,
+          accepting_user: @swap.accepting_user,
+          decision: "denied").swap_decision_email.deliver_now
         @swap.destroy
         render json: @usershift, status: :ok
       else
@@ -65,7 +67,8 @@ class SwapsController < ApplicationController
       @swap.accepting_user_id = nil
       if @swap.save
         UserMailer.with(swap: @swap,
-          accepting_user: @accepting_user).swap_denied_email.deliver_now
+          accepting_user: @accepting_user,
+          decision: "denied").swap_decision_email.deliver_now
         render json: {error: "swap denied"}, status: :ok
       else
         render json: @swap.errors, status: :unprocessable_entity
