@@ -17,7 +17,9 @@ class CalendarsController < ApplicationController
 
     if params["start_date"] && params["end_date"]
       if @calendar.users.include?(@user)
-        render json: @calendar.sql_summary_query(params["start_date"], params["end_date"])
+        render json: {
+          summaries: @calendar.sql_summary_query(params["start_date"], params["end_date"]),
+          roles: @user.roles.where(calendar_id: @calendar.id).map{|r| r.role}}
       else
         render json: '{}', status: :unauthorized
       end
