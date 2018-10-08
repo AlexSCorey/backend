@@ -61,57 +61,11 @@ query string required: the arguments in the URL are strictly required for this s
 ## calendars#alerts_daily
 GET	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/alerts_daily?date=:date
 
+
 api_token required - must be manager or owner of calendar
 
 query string required: the date argument in the URL is strictly required.  Replace :date with the appropriate date, e.g.: ?start_date=2018-06-30
 
-
-## users#create (register)
-
-POST https://fierce-forest-56311.herokuapp.com/users
-
-api_token not required
-
-required keys:
-* name
-* email, must be unique
-* password, minimum length: 5
-
-optional keys:
-* phone_number
-
-
-
-## users#update
-
-PATCH https://fierce-forest-56311.herokuapp.com/users/:id
-
-api_token required
-
-optional keys:
-* name
-* email, must be unique
-* phone_number
-* password, minimum length: 5
-
-
-## users#index (all users per calendar)
-
-GET https://fierce-forest-56311.herokuapp.com/calendars/:id/users
-
-api_token required
-
-
-
-## users#login (login)
-
-POST https://fierce-forest-56311.herokuapp.com/logins
-
-api_token not required
-
-required keys:
-* email
-* password
 
 
 
@@ -136,13 +90,6 @@ required keys:
 
 optional keys:
 * phone_number
-
-
-##shifts#myschedule (View of all of a users published schedules for all calendars)
-GET    https://fierce-forest-56311.herokuapp.com/users/:user_id/myschedule
-
-required keys:
-* user_id
 
 
 
@@ -245,6 +192,20 @@ required keys:
 * calendar_id
 
 
+##shifts#myschedule (View of all of a users published schedules for all calendars)
+GET    https://fierce-forest-56311.herokuapp.com/users/:user_id/myschedule
+
+required keys:
+* user_id
+
+
+##shifts#copy (copy calendar from previous)
+POST    https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/copy
+
+required keys:
+* calendar_id
+
+
 
 ## swaps#create (request that other users take over a shift)
 POST	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/shifts/:shift_id/swaps
@@ -285,6 +246,55 @@ api_token required - use the invitation token from swap decision email, not a us
 no keys required
 
 
+## users#create (register)
+
+POST https://fierce-forest-56311.herokuapp.com/users
+
+api_token not required
+
+required keys:
+* name
+* email, must be unique
+* password, minimum length: 5
+
+optional keys:
+* phone_number
+
+
+
+## users#update
+
+PATCH https://fierce-forest-56311.herokuapp.com/users/:id
+
+api_token required
+
+optional keys:
+* name
+* email, must be unique
+* phone_number
+* password, minimum length: 5
+
+
+## users#index (all users per calendar)
+
+GET https://fierce-forest-56311.herokuapp.com/calendars/:id/users
+
+api_token required
+
+
+
+## users#login (login)
+
+POST https://fierce-forest-56311.herokuapp.com/logins
+
+api_token not required
+
+required keys:
+* email
+* password
+
+
+
 ## users#shift_users_index
 GET	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/shifts/:shift_id/users
 
@@ -313,3 +323,5 @@ required keys:
 * user_id
 * shift_id
 * calendar_id
+
+

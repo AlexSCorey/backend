@@ -45,6 +45,22 @@ class ShiftsController < ApplicationController
         end
     end
 
+    def copy
+        set_calendar
+        @past_shift = Shift.find(params[:id])
+        if @calendar.users.owners.include?(current_user) || @calendar.users.managers.include?(current_user)
+          @shift = @past_shift.dup
+          @shift.users = @past_shift.users
+          if @shift.save
+            render json: ("Shift copied successfully"), status: :ok
+          else
+            render json: @usershift.errors, status: :uprocessable_entity
+          end
+        else
+          render json: ("You do not have access to copy shifts"), status: :unauthorized
+        end
+    end
+
     def update
         set_calendar
         set_shift
