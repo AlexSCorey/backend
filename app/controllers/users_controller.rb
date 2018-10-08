@@ -34,6 +34,18 @@ class UsersController < ApplicationController
         end
     end
 
+    def shift_users_index
+        @calendar = Calendar.find(params[:calendar_id])
+        @shift = Shift.find(params[:shift_id])
+        if @calendar.users.include?(current_user)
+            @assigned_users = @shift.users
+            @unassigned_users = @calendar.users -= @assigned_users
+            render "/users/shift_users_index.json", status: :ok
+        else
+            render json: nil, status: :unauthorized
+        end
+    end
+
 
     private
     
