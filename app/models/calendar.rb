@@ -50,8 +50,10 @@ ORDER BY 1|
     response = {date: date, alerts: {}}
     employee_hours = {}
     self.users.each do |user|
-      response[:alerts][user.id] = user.name
+      hours = 0
+      employee_hours[user.id] = hours
     end
+    response[:alerts] = employee_hours
     return response
   end
 
