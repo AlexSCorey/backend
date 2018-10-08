@@ -94,14 +94,14 @@ class CalendarsController < ApplicationController
     end
   end
 
-  def alerts
+  def alerts_daily
     @user = current_user
     @calendar = Calendar.find(params[:calendar_id])
 
     if params["date"]
       if @calendar.users.owners.include?(@user) ||
         @calendar.users.managers.include?(@user)
-        render json: @calendar.alerts(params["date"])
+        render json: @calendar.alerts_daily(params["date"])
       else
         render json: '{}', status: :unauthorized
       end

@@ -46,6 +46,15 @@ ORDER BY 1|
     return ActiveRecord::Base.connection.execute(sql)
   end
 
+  def alerts_daily(date)
+    response = {date: date, alerts: {}}
+    employee_hours = {}
+    self.users.each do |user|
+      response[:alerts][user.id] = user.name
+    end
+    return response
+  end
+
   private
 
   def time_zone_exists
