@@ -138,6 +138,14 @@ optional keys:
 * phone_number
 
 
+##shifts#myschedule (View of all of a users published schedules for all calendars)
+GET    https://fierce-forest-56311.herokuapp.com/users/:user_id/myschedule
+
+required keys:
+* user_id
+
+
+
 ## notes#index
 GET	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/notes?start_date=:start_date&end_date=:end_date
 
