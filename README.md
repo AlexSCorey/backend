@@ -264,9 +264,26 @@ required keys:
 * decision (string) must be either "approve" or "deny"
 
 
+
+## password#forgot
+POST	https://fierce-forest-56311.herokuapp.com/passwords/forgot (request new pw)
+
+required keys
+* email
+
+## password#reset
+POST	https://fierce-forest-56311.herokuapp.com/passwords/reset (reset new pw)
+
+required keys
+* email
+* new password
+* reset_password_token (only valid 2 hours, destroys after 1 use)
+
+
 ## users#shift_users_index
 GET	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/shifts/:shift_id/users
 
 api_token required - must be user of calendar
 
 no keys required
+
