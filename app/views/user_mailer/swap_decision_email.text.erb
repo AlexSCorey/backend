@@ -1,0 +1,5 @@
+
+<%= @swap.requesting_user.name %>'s request to transfer the following shift to <%= @accepting_user.name %> has been <%= @decision %>.
+
+<%= @swap.shift.calendar.name %>
+<%= @swap.shift.start_time.in_time_zone(@swap.shift.calendar.time_zone).to_s(:long_ordinal) %> - <%= @swap.shift.end_time.in_time_zone(@swap.shift.calendar.time_zone).to_s(:long_ordinal) %>

@@ -15,6 +15,8 @@ class Calendar < ApplicationRecord
     end
   end
   has_many :notes
+  has_many :shifts
+  has_many :swaps, through: :shifts
 
   def sql_summary_query(start_date, end_date)
     # this query should be rewritten to sanitize inputs

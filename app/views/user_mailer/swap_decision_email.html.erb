@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p>
+      <%= @swap.requesting_user.name %>'s request to transfer the following
+      shift to <%= @accepting_user.name %> has been <%= @decision %>.
+    </p>
+    <p>
+      <%= @swap.shift.calendar.name %>
+    </p>
+    <p>
+      <%= @swap.shift.start_time.in_time_zone(@swap.shift.calendar.time_zone).to_s(:long_ordinal) %>
+      - <%= @swap.shift.end_time.in_time_zone(@swap.shift.calendar.time_zone).to_s(:long_ordinal) %>
+    </p>
+  </body>
+</html>
