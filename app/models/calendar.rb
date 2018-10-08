@@ -47,13 +47,24 @@ ORDER BY 1|
   end
 
   def alerts_daily(date)
-    response = {date: date, alerts: {}}
-    employee_hours = {}
-    self.users.each do |user|
+    response = {date: date, alerts: {
+      employee_hours_alerts: [],
+      unassigned_shift_capacity: {}
+    }}
+    self.users.distinct.each do |user|
       hours = 0
-      employee_hours[user.id] = hours
+      user.shifts.where(calendar_id: self.id).each do |shift|
+        hours += shift.duration_during(date.to_date.beginning_of_day,
+          date.to_date.end_of_day)/3600
+      end
+      if hours > self.employee_hour_threshold_daily
+        response[:alerts][:employee_hours_alerts].push({
+          user: {
+            id: user.id,
+            name: user.name},
+          hours: hours})
+      end
     end
-    response[:alerts] = employee_hours
     return response
   end
 
