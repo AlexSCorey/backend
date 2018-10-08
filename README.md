@@ -133,6 +133,14 @@ optional keys:
 * phone_number
 
 
+##shifts#myschedule (View of all of a users published schedules for all calendars)
+GET    https://fierce-forest-56311.herokuapp.com/users/:user_id/myschedule
+
+required keys:
+* user_id
+
+
+
 ## notes#index
 GET	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/notes?start_date=:start_date&end_date=:end_date
 
@@ -264,6 +272,14 @@ required keys:
 * decision (string) must be either "approve" or "deny"
 
 
+## swap#show
+GET	https://fierce-forest-56311.herokuapp.com/swap
+
+api_token required - use the invitation token from swap decision email, not a user api_token
+
+no keys required
+
+
 ## users#shift_users_index
 GET	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/shifts/:shift_id/users
 
@@ -293,9 +309,3 @@ required keys:
 * shift_id
 * calendar_id
 
-## swap#show
-GET	https://fierce-forest-56311.herokuapp.com/swap
-
-api_token required - use the invitation token from swap decision email, not a user api_token
-
-no keys required
