@@ -94,6 +94,22 @@ class CalendarsController < ApplicationController
     end
   end
 
+  def alerts
+    @user = current_user
+    @calendar = Calendar.find(params[:calendar_id])
+
+    if params["date"]
+      if @calendar.users.owners.include?(@user) ||
+        @calendar.users.managers.include?(@user)
+        render json: @calendar.alerts(params["date"])
+      else
+        render json: '{}', status: :unauthorized
+      end
+    else
+      render json: {'error': 'date is required'}, status: :unprocessable_entity
+    end
+  end
+
 
   private
     

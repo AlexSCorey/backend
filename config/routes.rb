@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :swaps, only: [:index, :update]
 
     get '/summary', action: :summary, controller: 'calendars'
+    get '/alerts', action: :alerts, controller: 'calendars'
 
     resources :shifts, only: [:index, :create, :update, :destroy] do
       resources :swaps, only: [:create]
