@@ -4,3 +4,4 @@ end
 json.unassigned_users @unassigned_users do |u|
   json.partial! 'users/userlist', user: u
 end
+json.roles @roles
