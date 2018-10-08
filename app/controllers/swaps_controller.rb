@@ -78,6 +78,11 @@ class SwapsController < ApplicationController
     end
   end
 
+  def show
+    @swap = current_swap
+    render "/swaps/show.json", status: :ok
+  end
+
   private
 
   def set_calendar

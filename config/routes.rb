@@ -28,10 +28,14 @@ Rails.application.routes.draw do
 
   post 'invitations/complete', action: :complete, controller: 'invitations'
   post 'swaps/complete', action: :complete, controller: 'swaps'
+  get 'swap', action: :show, controller: 'swaps'
 
   resources :users, only: [:create, :edit, :update]
 
   resources :logins, only: [:create]
+
+  post 'password/forgot', to: 'password#forgot'
+  post 'password/reset', to: 'password#reset'
 
   
 end
