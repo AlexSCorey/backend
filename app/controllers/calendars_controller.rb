@@ -26,6 +26,7 @@ class CalendarsController < ApplicationController
     end
   end
 
+
   def create
     if current_user
       @calendar = Calendar.new(calendar_params)

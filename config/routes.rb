@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
     resources :shifts, only: [:index, :create, :update, :destroy] do
       resources :swaps, only: [:create]
-      resources :usershifts, only: [:create, :destroy]
+      resources :usershifts, only: [:create, :destroy,]
       get '/users', action: :shift_users_index, controller: 'users'
     end
 
@@ -23,15 +23,13 @@ Rails.application.routes.draw do
 
     resources :notes, only: [:index, :create]
 
+    post '/copy', to: 'shifts#copy'
+
   end
 
   post 'invitations/complete', action: :complete, controller: 'invitations'
   post 'swaps/complete', action: :complete, controller: 'swaps'
-<<<<<<< HEAD
-  
-=======
   get 'swap', action: :show, controller: 'swaps'
->>>>>>> development
 
   resources :users, only: [:create, :edit, :update] do
     get '/myschedule', to: 'shifts#myschedule'
