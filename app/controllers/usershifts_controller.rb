@@ -14,6 +14,7 @@ class UsershiftsController < ApplicationController
     end
   end
 
+
   def destroy
     set_calendar
     @usershift = Usershift.find(params[:id])
