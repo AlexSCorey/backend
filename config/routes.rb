@@ -28,11 +28,7 @@ Rails.application.routes.draw do
 
   post 'invitations/complete', action: :complete, controller: 'invitations'
   post 'swaps/complete', action: :complete, controller: 'swaps'
-<<<<<<< HEAD
-  
-=======
   get 'swap', action: :show, controller: 'swaps'
->>>>>>> development
 
   resources :users, only: [:create, :edit, :update] do
     get '/myschedule', to: 'shifts#myschedule'
