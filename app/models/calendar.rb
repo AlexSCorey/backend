@@ -48,9 +48,17 @@ ORDER BY 1|
 
   def alerts_daily(date)
     response = {date: date, alerts: {
-      employee_hours_alerts: [],
-      unassigned_shift_capacity: {}
+      employee_hours_threshold: [],
+      unassigned_shift_capacity: []
     }}
+    gather_employee_hours_alerts_alerts(date, response)
+    gather_unassigned_shift_capacity_alerts(date, response)
+    return response
+  end
+
+  private
+
+  def gather_employee_hours_alerts_alerts(date, response)
     self.users.distinct.each do |user|
       hours = 0
       user.shifts.where(calendar_id: self.id).each do |shift|
@@ -58,17 +66,30 @@ ORDER BY 1|
           date.to_date.end_of_day)/3600
       end
       if hours > self.employee_hour_threshold_daily
-        response[:alerts][:employee_hours_alerts].push({
-          user: {
-            id: user.id,
-            name: user.name},
+        response[:alerts][:employee_hours_threshold].push({
+          user_id: user.id,
+          user_name: user.name,
           hours: hours})
       end
     end
-    return response
   end
 
-  private
+  def gather_unassigned_shift_capacity_alerts(date, response)
+    shifts = self.shifts.where('start_time BETWEEN ? AND ?',
+      date.to_date.beginning_of_day,
+      date.to_date.end_of_day)
+    shifts.each do |shift|
+      if shift.usershifts.count < shift.capacity
+        response[:alerts][:unassigned_shift_capacity].push({
+          shift_id: shift.id,
+          shift_start: shift.start_time,
+          shift_end: shift.end_time,
+          capacity: shift.capacity,
+          assigned_users: shift.usershifts.count
+        })
+      end
+    end
+  end
 
   def time_zone_exists
     return if ActiveSupport::TimeZone[time_zone].present?
