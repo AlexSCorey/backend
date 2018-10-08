@@ -261,3 +261,11 @@ api_token required - use the invitation token from swap decision email, not a us
 
 required keys:
 * decision (string) must be either "approve" or "deny"
+
+
+## users#shift_users_index
+GET	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/shifts/:shift_id/users
+
+api_token required - must be user of calendar
+
+no keys required
