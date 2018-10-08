@@ -18,8 +18,9 @@ class UserMailer < ApplicationMailer
   end
 
   def forgot_password
+    pw_reset = "https://schedule-79e4e.firebaseapp.com/password/reset/"
     @user = params[:user]
-    @url = "https://schedule-79e4e.firebaseapp.com/password/reset"
+    @url = pw_reset + params[:user].reset_password_token
     mail(to: @user.email, subject: "Password Reset Instructions")
   end
   

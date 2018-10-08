@@ -15,14 +15,14 @@ class PasswordController < ApplicationController
     def reset
         token = params[:token].to_s
         @user = User.find_by(reset_password_token: token)
-        if @user.present?
+        if @user.present? && @user.password_token_valid?
             if @user.reset_password!(params[:password])
                 render json: ("Password successfully changed."), status: :ok
             else
                 render json: user.errors, status: :unprocessable_entity
             end
         else
-            render json: ("Link not valid, try generating new link"), status: :unauthorized
+            render json: ("Link not valid or expired, try generating new link"), status: :unauthorized
         end
     end
 end

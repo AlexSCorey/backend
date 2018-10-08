@@ -86,6 +86,7 @@ ActiveRecord::Schema.define(version: 2018_10_05_224306) do
     t.string "password_digest"
     t.string "api_token"
     t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
   end
 
   create_table "usershifts", force: :cascade do |t|

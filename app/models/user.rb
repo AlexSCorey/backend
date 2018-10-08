@@ -3,7 +3,7 @@ class User < ApplicationRecord
     has_secure_password
     has_secure_token :api_token
     validates :email, presence: true, uniqueness: true
-    validates :password, presence: true, length: {minimum: 5}
+    validates :password, presence: true, length: {minimum: 5}, allow_nil: true
     validates :name, presence: true
 
     has_many :usershifts
@@ -25,16 +25,26 @@ class User < ApplicationRecord
     end
     has_many :notes
 
+    has_many :requested_swaps, class_name: "Swap", foreign_key: :requesting_user
+    has_many :accepted_swaps, class_name: "Swap", foreign_key: :accepting_user
+
     def generate_password_token!
         self.reset_password_token = generate_token
+        self.reset_password_sent_at = Time.now.utc
+        save!
+    end
+
+    def password_token_valid?
+        (self.reset_password_sent_at + 2.hours) > Time.now.utc
     end
 
     def reset_password!(password)
         self.reset_password_token = nil
         self.password = password
+        save!
     end
-    has_many :requested_swaps, class_name: "Swap", foreign_key: :requesting_user
-    has_many :accepted_swaps, class_name: "Swap", foreign_key: :accepting_user
+
+   
 
     private
 
