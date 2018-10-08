@@ -20,6 +20,16 @@ class ShiftsController < ApplicationController
         end
     end
 
+    def myschedule
+        @user = User.find(params[:user_id])
+        @publishedshifts = @user.shifts.where(published: true)
+        if @user
+            render "/shifts/index2.json", status: :ok
+        else
+            render json: ('You do not have access to these shifts'), status: :unauthorized
+        end
+    end
+
 
     def create
         set_calendar
