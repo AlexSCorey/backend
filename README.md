@@ -58,7 +58,12 @@ api_token required - must be user of calendar
 query string required: the arguments in the URL are strictly required for this summary to limit for a specific date range.  Replace :start_date and :end_date with the appropriate dates and times, e.g.: ?start_date=2018-06-30&end_date=2018-07-06
 
 
+## calendars#alerts_daily
+GET	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/alerts_daily?date=:date
 
+api_token required - must be manager or owner of calendar
+
+query string required: the date argument in the URL is strictly required.  Replace :date with the appropriate date, e.g.: ?start_date=2018-06-30
 
 
 ## users#create (register)
@@ -264,6 +269,14 @@ required keys:
 * decision (string) must be either "approve" or "deny"
 
 
+## swap#show
+GET	https://fierce-forest-56311.herokuapp.com/swap
+
+api_token required - use the invitation token from swap decision email, not a user api_token
+
+no keys required
+
+
 ## users#shift_users_index
 GET	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/shifts/:shift_id/users
 
@@ -292,10 +305,3 @@ required keys:
 * user_id
 * shift_id
 * calendar_id
-
-## swap#show
-GET	https://fierce-forest-56311.herokuapp.com/swap
-
-api_token required - use the invitation token from swap decision email, not a user api_token
-
-no keys required
