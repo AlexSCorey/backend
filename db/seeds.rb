@@ -78,7 +78,7 @@ NOTE_TEXT = [
 ]
 
 Calendar.all.each do |calendar|
-  users = calendar.users
+  users = calendar.users.distinct
   date_index = Date.today - 100
   200.times do
     Random.rand(4).times do
@@ -99,7 +99,7 @@ SHIFT_DURATIONS = [2,4,8,9,12]
 BOOLEANS = [true, false]
 
 Calendar.all.each do |calendar|
-  users = calendar.users
+  users = calendar.users.distinct
   date_index = Date.today - 50
   100.times do
     Random.rand(4).times do
