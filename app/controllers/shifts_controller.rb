@@ -3,15 +3,20 @@ class ShiftsController < ApplicationController
 
     def index
         set_calendar
-        @shifts = Shift.all
-        @publishedshifts = @shifts.where(published: true)
-        if @calendar.users.owners.include?(current_user) || @calendar.users.managers.include?(current_user)
-            render "/shifts/index.json", status: :ok
-        elsif 
-            @calendar.users.include?(current_user)
-            render json: @publishedshifts, status: :ok
+
+        if params["start_date"] && params["end_date"]
+            start_date = params["start_date"].to_date
+            end_date = params["end_date"].to_date
+            if @calendar.users.include?(current_user)
+                @shifts = Shift.where(
+                    calendar_id: @calendar.id,
+                    start_time: start_date.beginning_of_day .. end_date.end_of_day)
+                render "/shifts/index.json", status: :ok
+            else
+                render json: '{}', status: :unauthorized
+            end
         else
-            render json: ('You do not have access to these shifts'), status: :unauthorized
+            render json: {'error': 'start date and end date are required'}, status: :unprocessable_entity
         end
     end
 

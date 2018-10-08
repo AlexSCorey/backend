@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>a shift swap is pending your approval</h1>
+    <p>
+      <%= @swap.requesting_user.name %> would like to swap the following
+      shift with <%= @swap.accepting_user.name %> on the
+      <%= @swap.shift.calendar.name %> calendar:
+    </p>
+    <p>
+      <%= @swap.shift.start_time.in_time_zone(@swap.shift.calendar.time_zone).to_s(:long_ordinal) %>
+       - <%= @swap.shift.end_time.in_time_zone(@swap.shift.calendar.time_zone).to_s(:long_ordinal) %>
+    </p>
+    <p>
+      To approve or deny this request, follow this link: <%= @url %>.
+    </p>
+  </body>
+</html>

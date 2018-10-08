@@ -22,5 +22,21 @@ class UserMailer < ApplicationMailer
     @url = "https://schedule-79e4e.firebaseapp.com/password/reset"
     mail(to: @user.email, subject: "Password Reset Instructions")
   end
+  
+  def swap_complete_email
+    complete_page = "https://scheduler-79e4e.firebaseapp.com/complete/"
+    @swap = params[:swap]
+    @managers = params[:swap].shift.calendar.users.managers
+    @url = complete_page + params[:swap].api_token
+    mail(to: @managers.map{|m| m.email}, subject: "shift swap pending approval")
+  end
+
+  def swap_decision_email
+    @swap = params[:swap]
+    @accepting_user = params[:accepting_user]
+    @decision = params[:decision]
+    mail(to: [@accepting_user.email, @swap.requesting_user.email],
+      subject: "shift swap " + @decision)
+  end
 
 end

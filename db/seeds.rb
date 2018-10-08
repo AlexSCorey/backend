@@ -8,22 +8,22 @@
 
 USERS = [
   {name: "Greg Taylor",
-    email: "greguser@doesnotexist.com",
+    email: "shiftgear+greg@googlegroups.com",
     password: "gregpassword",
     phone_number: "123-456-7890"
   },
   {name: "Sohel Patel",
-    email: "soheluser@doesnotexist.com",
+    email: "shiftgear+sohel@googlegroups.com",
     password: "sohelpassword",
     phone_number: "123-456-7890"
   },
   {name: "Alex Corey",
-    email: "alexuser@doesnotexist.com",
+    email: "shiftgear+alex@googlegroups.com",
     password: "alexpassword",
     phone_number: "123-456-7890"
   },
   {name: "Michael Bond",
-    email: "mikeuser@doesnotexist.com",
+    email: "shiftgear+mike@googlegroups.com",
     password: "mikepassword",
     phone_number: "123-456-7890"
   },
@@ -93,49 +93,50 @@ Calendar.all.each do |calendar|
   end
 end
 
-SHIFTS = [
-  {start_time: "2018-10-5 08:00",
-    end_time: "2018-10-5 16:00",
-    calendar_id: 1,
-    capacity: 5,
-    published: false},
-  {start_time: "2018-10-5 16:00",
-    end_time: "2018-10-5 23:00",
-    calendar_id: 1, 
-    capacity: 8,
-    published: false},
-  {start_time: "2018-10-5 10:00",
-    end_time: "2018-10-5 14:00",
-    calendar_id: 1,
-    capacity: 3,
-    published: false},
-  {start_time: "2018-10-5 18:00",
-    end_time: "2018-10-5 22:00",
-    calendar_id: 1, 
-    capacity: 3,
-    published: false},
-    {start_time: "2018-10-5 06:00",
-    end_time: "2018-10-5 14:00",
-    calendar_id: 2,
-    capacity: 6,
-    published: true},
-  {start_time: "2018-10-5 14:00",
-    end_time: "2018-10-5 22:00",
-    calendar_id: 2, 
-    capacity: 8,
-    published: false},
-  {start_time: "2018-10-5 10:00",
-    end_time: "2018-10-5 14:00",
-    calendar_id: 2,
-    capacity: 3,
-    published: false},
-  {start_time: "2018-10-5 18:00",
-    end_time: "2018-10-5 22:00",
-    calendar_id: 2, 
-    capacity: 3,
-    published: false},
-]
+SHIFT_HOURS = (1..23).to_a
+SHIFT_MINUTES = [0,15,30,45]
+SHIFT_DURATIONS = [2,4,8,9,12]
+BOOLEANS = [true, false]
 
-SHIFTS.each do |shift|
-  Shift.create!(shift)
+Calendar.all.each do |calendar|
+  users = calendar.users
+  date_index = Date.today - 50
+  100.times do
+    Random.rand(4).times do
+      start_time = DateTime.new(
+        date_index.year,
+        date_index.month,
+        date_index.day,
+        SHIFT_HOURS.sample,
+        SHIFT_MINUTES.sample)
+      end_time = start_time.advance(hours: SHIFT_DURATIONS.sample)
+      shift = Shift.new(
+        start_time: start_time,
+        end_time: end_time,
+        calendar_id: calendar.id,
+        capacity: rand(10),
+        published: BOOLEANS.sample
+      )
+      shift.save
+      users.each do |user|
+        if shift.users.length < shift.capacity
+          if BOOLEANS.sample
+            Usershift.new(
+              user_id: user.id,
+              shift_id: shift.id
+            ).save
+          end
+        end
+      end
+    end
+    date_index += 1
+  end
+end
+
+Usershift.all.each do |usershift|
+  if usershift.id % 11 == 0 &&
+    usershift.shift.start_time > DateTime.now
+    Swap.new(requesting_user_id: usershift.user_id,
+      shift_id: usershift.shift_id).save
+  end
 end

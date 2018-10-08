@@ -119,9 +119,11 @@ required keys:
 
 
 ## shifts#index (index of shifts based on role)
-GET     https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/shifts
+GET     https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/shifts?start_date=:start_date&end_date=:end_date
 
-api_token required (must be owner or manager to view all shifts, must be employee to view published shifts)
+api_token required (must be user of calendar)
+
+query string required: the arguments in the URL are strictly required to limit for a specific date range.  Replace :start_date and :end_date with the appropriate dates and times, e.g.: ?start_date=2018-06-30&end_date=2018-07-06
 
 ## shifts#create (add shifts to calendar)
 POST    https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/shifts
@@ -221,3 +223,42 @@ api_token required - must be user associated with calendar
 required keys:
 * text (string)
 * date (whole date only, e.g. 2018-10-06)
+
+
+## calendars#summary
+GET	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/summary?start_date=:start_date&end_date=:end_date
+
+api_token required - must be user of calendar
+
+query string required: the arguments in the URL are strictly required for this summary to limit for a specific date range.  Replace :start_date and :end_date with the appropriate dates and times, e.g.: ?start_date=2018-06-30&end_date=2018-07-06
+
+
+## swaps#create (request that other users take over a shift)
+POST	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/shifts/:shift_id/swaps
+
+api_token required - must be user associated with shift
+
+no keys required
+
+
+## swaps#index (view list of shifts swap requests)
+GET	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/swaps
+
+api_token required - must be user of calendar
+
+no keys required
+
+
+## swaps#update (accept shift swap request pending manager approval)
+PATCH	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/swaps/:id
+
+api_token required - must be user of calendar
+
+
+## swaps#complete
+POST	https://fierce-forest-56311.herokuapp.com/swaps/complete
+
+api_token required - use the invitation token from swap decision email, not a user api_token
+
+required keys:
+* decision (string) must be either "approve" or "deny"
