@@ -262,3 +262,18 @@ api_token required - use the invitation token from swap decision email, not a us
 
 required keys:
 * decision (string) must be either "approve" or "deny"
+
+
+## password#forgot
+POST	https://fierce-forest-56311.herokuapp.com/passwords/forgot (request new pw)
+
+required keys
+* email
+
+## password#reset
+POST	https://fierce-forest-56311.herokuapp.com/passwords/reset (reset new pw)
+
+required keys
+* email
+* new password
+* reset_password_token (only valid 2 hours, destroys after 1 use)
