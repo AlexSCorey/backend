@@ -58,6 +58,16 @@ api_token required - must be user of calendar
 query string required: the arguments in the URL are strictly required for this summary to limit for a specific date range.  Replace :start_date and :end_date with the appropriate dates and times, e.g.: ?start_date=2018-06-30&end_date=2018-07-06
 
 
+## calendars#alerts_daily
+GET	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/alerts_daily?date=:date
+
+
+api_token required - must be manager or owner of calendar
+
+query string required: the date argument in the URL is strictly required.  Replace :date with the appropriate date, e.g.: ?start_date=2018-06-30
+
+
+
 
 ## invitations#create (invite to calendar via email)
 POST	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/invitation	
@@ -313,4 +323,5 @@ required keys:
 * user_id
 * shift_id
 * calendar_id
+
 

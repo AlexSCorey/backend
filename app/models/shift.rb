@@ -6,6 +6,25 @@ class Shift < ApplicationRecord
 
     validate   :capacity_greater_than_zero, :end_time_greater_than_start_time
 
+    def duration_during(start_time, end_time)
+        if self.start_time.to_time < start_time.to_time
+            if self.end_time.to_time < start_time.to_time
+                0
+            elsif self.end_time.to_time > end_time.to_time
+                end_time.to_time - start_time.to_time
+            else
+                self.end_time.to_time - start_time.to_time
+            end
+        elsif self.start_time.to_time > end_time.to_time
+            0
+        else
+            if self.end_time.to_time < end_time.to_time
+                self.end_time.to_time - self.start_time.to_time
+            else
+                end_time.to_time - self.start_time.to_time
+            end
+        end
+    end
 
     private
 

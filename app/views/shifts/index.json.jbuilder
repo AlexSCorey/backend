@@ -6,3 +6,4 @@ json.shifts @shifts do |shift|
   json.capacity shift.capacity
   json.published shift.published
 end
+json.roles @roles
