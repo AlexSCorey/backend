@@ -293,19 +293,9 @@ required keys:
 * shift_id
 * calendar_id
 
+## swap#show
+GET	https://fierce-forest-56311.herokuapp.com/swap
 
+api_token required - use the invitation token from swap decision email, not a user api_token
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+no keys required
