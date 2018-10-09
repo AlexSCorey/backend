@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_05_224306) do
+ActiveRecord::Schema.define(version: 2018_10_09_155310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "availability_requests", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "calendar_id"
+    t.boolean "complete"
+    t.string "api_token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["calendar_id"], name: "index_availability_requests_on_calendar_id"
+    t.index ["user_id"], name: "index_availability_requests_on_user_id"
+  end
 
   create_table "calendars", force: :cascade do |t|
     t.string "name"
