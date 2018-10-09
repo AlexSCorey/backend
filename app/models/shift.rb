@@ -2,6 +2,7 @@ class Shift < ApplicationRecord
     has_many :usershifts
     has_many :users, through: :usershifts
     has_many :swaps
+    has_many :availability_responses
     belongs_to :calendar
 
     validate   :capacity_greater_than_zero, :end_time_greater_than_start_time

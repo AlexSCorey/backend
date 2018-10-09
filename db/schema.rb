@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_09_155310) do
+ActiveRecord::Schema.define(version: 2018_10_09_162315) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,16 @@ ActiveRecord::Schema.define(version: 2018_10_09_155310) do
     t.datetime "updated_at", null: false
     t.index ["calendar_id"], name: "index_availability_requests_on_calendar_id"
     t.index ["user_id"], name: "index_availability_requests_on_user_id"
+  end
+
+  create_table "availability_responses", force: :cascade do |t|
+    t.bigint "availability_request_id"
+    t.bigint "shift_id"
+    t.boolean "available"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["availability_request_id"], name: "index_availability_responses_on_availability_request_id"
+    t.index ["shift_id"], name: "index_availability_responses_on_shift_id"
   end
 
   create_table "calendars", force: :cascade do |t|
