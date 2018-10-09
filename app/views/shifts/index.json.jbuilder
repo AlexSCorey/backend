@@ -5,5 +5,9 @@ json.shifts @shifts do |shift|
   json.calendar_id shift.calendar_id
   json.capacity shift.capacity
   json.published shift.published
+  json.assigned_users shift.users do |user|
+    json.id user.id
+    json.name user.name
+  end
 end
 json.roles @roles
