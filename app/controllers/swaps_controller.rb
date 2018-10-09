@@ -17,8 +17,10 @@ class SwapsController < ApplicationController
   end
   
   def index
+    @user = current_user
     set_calendar
-    if @calendar.users.include?(current_user)
+    @roles = @user.roles.where(calendar_id: @calendar.id).map{|r| r.role}
+    if @calendar.users.include?(@user)
       @swaps = @calendar.swaps
       render "/swaps/index.json", status: :ok
     else
