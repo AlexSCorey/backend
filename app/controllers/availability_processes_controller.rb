@@ -49,16 +49,16 @@ class AvailabilityProcessesController < ApplicationController
           end
         end
 
+        send_availability_request_emails(process)
       end
-      send_availability_request_emails(process.requests)
-    rescue
-      render json: {error: "unable to commit availability requests and responses"}, status: :unprocessable_entity
+    rescue => error
+      render json: {error: error.message}, status: :unprocessable_entity
     end
   end
 
-  def send_availability_request_emails(requests)
-    @requests = requests
-    render "/availability_requests/create.json", status: :ok
+  def send_availability_request_emails(process)
+    @process = process
+    render "/availability_processes/create.json", status: :ok
   end
 
 end
