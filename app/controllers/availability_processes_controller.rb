@@ -30,6 +30,16 @@ class AvailabilityProcessesController < ApplicationController
           end_date: end_date)
         process.save!
 
+        shifts = Shift.where(
+          calendar_id: process.calendar.id,
+          start_time: start_date.beginning_of_day .. end_date.end_of_day)
+        shifts.each do |shift|
+          AvailabilityProcessShift.new(
+            availability_process_id: process.id,
+            shift_id: shift.id
+          ).save!
+        end
+
         calendar.users.distinct.each do |user|
           availability_request = AvailabilityRequest.new(
             user_id: user.id,
@@ -37,10 +47,7 @@ class AvailabilityProcessesController < ApplicationController
             complete: false)
           availability_request.save!
 
-          shifts = Shift.where(
-            calendar_id: calendar.id,
-            start_time: start_date.beginning_of_day .. end_date.end_of_day)
-          shifts.each do |shift|
+          process.shifts.each do |shift|
             availability_response = AvailabilityResponse.new(
               availability_request_id: availability_request.id,
               shift_id: shift.id,
