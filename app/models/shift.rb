@@ -5,7 +5,7 @@ class Shift < ApplicationRecord
     has_many :availability_responses
     belongs_to :calendar
 
-    validate   :capacity_greater_than_zero, :end_time_greater_than_start_time
+    validate   :capacity_greater_than_zero, :end_time_greater_than_start_time 
 
     def duration_during(start_time, end_time)
         if self.start_time.to_time < start_time.to_time
