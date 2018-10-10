@@ -150,7 +150,7 @@ POST    https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/copy?st
 
 api_token required (must be owner or manager of calendar)
 
-query string required: the arguments in the URL are strictly required to limit for a specific date range.  Replace :start_date, :end_date, and :target_date with the appropriate dates and times, e.g.: ?start_date=2018-06-30&end_date=2018-07-06&target_date=2018-07-13
+query string required: the arguments in the URL are strictly required to limit for a specific date range.  Replace :start_date, :end_date, and :target_date with the appropriate dates and times, e.g.: ?start_date=2018-06-30&end_date=2018-07-06&target_date=2018-07-13.  Target date is the beginning of the new schedule.
 
 
 
