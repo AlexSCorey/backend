@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
     resources :swaps, only: [:index, :update]
     resource :availability_process, only: [:create]
-    resource :availability_response, only: [:update]
+    resource :availability_response, only: [:show, :update]
     resource :invitation, only: [:create]
     resources :notes, only: [:index, :create]
 
