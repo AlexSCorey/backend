@@ -58,6 +58,9 @@ class AvailabilityProcessesController < ApplicationController
 
   def send_availability_request_emails(process)
     @process = process
+    @process.availability_requests.each do |request|
+      UserMailer.with(request: request).availability_request_email.deliver_now
+    end
     render "/availability_processes/create.json", status: :ok
   end
 
