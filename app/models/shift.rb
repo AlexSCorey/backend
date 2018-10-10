@@ -27,6 +27,10 @@ class Shift < ApplicationRecord
         end
     end
 
+    def available_users
+        return this.availability_responses.users
+    end
+
     private
 
     def capacity_greater_than_zero

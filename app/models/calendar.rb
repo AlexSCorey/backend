@@ -1,4 +1,8 @@
 class Calendar < ApplicationRecord
+  SHIFT_HOURS = (1..23).to_a
+  SHIFT_MINUTES = [0,15,30,45]
+  SHIFT_DURATIONS = [2,4,8,9,12]
+
   validates :name, presence: true
   validate :time_zone_exists
 
@@ -54,6 +58,34 @@ ORDER BY 1|
     gather_employee_hours_alerts_alerts(date, response)
     gather_unassigned_shift_capacity_alerts(date, response)
     return response
+  end
+
+  def seed_shifts(start_date, days)
+    shifts = []
+    users = self.users.distinct
+    date_index = start_date
+    days.times  do
+      Random.rand(4).times do
+        start_time = DateTime.new(
+          date_index.year,
+          date_index.month,
+          date_index.day,
+          SHIFT_HOURS.sample,
+          SHIFT_MINUTES.sample)
+        end_time = start_time.advance(hours: SHIFT_DURATIONS.sample)
+        shift = Shift.new(
+          start_time: start_time,
+          end_time: end_time,
+          calendar_id: self.id,
+          capacity: rand(10)+1,
+          published: true
+        )
+        shift.save!
+        shifts.push(shift)
+      end
+      date_index += 1
+    end
+    return shifts
   end
 
   private
