@@ -41,8 +41,9 @@ class UserMailer < ApplicationMailer
   end
 
   def availability_request_email
-    response_page = "https://scheduler-79e4e.firebaseapp.com/availability_response/"
     @request = params[:request]
+    response_page = "https://scheduler-79e4e.firebaseapp.com/calendars/" + 
+      @request.availability_process.calendar_id.to_s + "/availability_response/"
     @url  = response_page + @request.api_token
     dates = (@request.availability_process.start_date.to_date.to_s + " through " +
       @request.availability_process.end_date.to_date.to_s)

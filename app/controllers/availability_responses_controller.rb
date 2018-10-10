@@ -1,0 +1,2 @@
+class AvailabilityResponsesController < ApplicationController
+end
