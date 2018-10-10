@@ -8,6 +8,7 @@ json.availability_process do
     json.id @request.id
     json.user_id @request.user_id
     json.user_name @request.user.name
+    json.complete @request.complete
     json.responses @request.availability_responses do |response|
       json.partial! 'availability_responses/response_li', response: response
     end
