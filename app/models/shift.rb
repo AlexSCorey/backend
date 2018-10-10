@@ -3,6 +3,9 @@ class Shift < ApplicationRecord
     has_many :users, through: :usershifts
     has_many :swaps
     has_many :availability_responses
+    has_many :availability_requests, through: :availability_responses
+    has_many :availability_users, through: :availability_requests, source: :user
+        
     belongs_to :calendar
 
     validate   :capacity_greater_than_zero, :end_time_greater_than_start_time 
@@ -28,7 +31,8 @@ class Shift < ApplicationRecord
     end
 
     def available_users
-        return this.availability_responses.users
+        self.availability_users.merge(
+            AvailabilityResponse.where(available: true))
     end
 
     private
