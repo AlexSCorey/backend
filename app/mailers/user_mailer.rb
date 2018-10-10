@@ -40,4 +40,15 @@ class UserMailer < ApplicationMailer
       subject: "shift swap " + @decision)
   end
 
+  def availability_request_email
+    @request = params[:request]
+    response_page = "https://scheduler-79e4e.firebaseapp.com/calendars/" + 
+      @request.availability_process.calendar_id.to_s + "/availability_response/"
+    @url  = response_page + @request.api_token
+    dates = (@request.availability_process.start_date.to_date.to_s + " through " +
+      @request.availability_process.end_date.to_date.to_s)
+    mail(to: @request.user.email,
+      subject: "shiftgear availability requested for " + dates)
+  end
+
 end
