@@ -35,6 +35,14 @@ class Shift < ApplicationRecord
             AvailabilityResponse.where(available: true))
     end
 
+    def unconflicted_available_users
+        response = []
+        self.available_users.each do |user|
+            response.push(user) unless user.conflicting_shifts(self).any?
+        end
+        return response
+    end
+
     private
 
     def capacity_greater_than_zero
