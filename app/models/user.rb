@@ -52,6 +52,13 @@ class User < ApplicationRecord
             )
     end
 
+    def shift_time_in_availability_process(process)
+        duration = 0
+        shifts = process.shifts.merge(self.shifts)
+        shifts.each {|shift| duration += shift.duration}
+        return duration
+    end
+
     private
 
     def generate_token

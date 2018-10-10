@@ -10,6 +10,10 @@ class Shift < ApplicationRecord
 
     validate   :capacity_greater_than_zero, :end_time_greater_than_start_time 
 
+    def duration
+        self.end_time - self.start_time
+    end
+
     def duration_during(start_time, end_time)
         if self.start_time.to_time < start_time.to_time
             if self.end_time.to_time < start_time.to_time
@@ -56,9 +60,5 @@ class Shift < ApplicationRecord
             errors.add( :start_time, "Must be earlier than shift end time!")
         end
     end
-    
-
-
-
 
 end
