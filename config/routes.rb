@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   resources :calendars, only: [:index, :create, :show, :update, :destroy] do
 
     resources :swaps, only: [:index, :update]
-    resource :availability_request, only: [:create]
+    resource :availability_process, only: [:create]
 
     get '/summary', action: :summary, controller: 'calendars'
     get '/alerts_daily', action: :alerts_daily, controller: 'calendars'
