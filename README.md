@@ -333,3 +333,41 @@ required keys:
 * calendar_id
 
 
+## availability_processes#create (request availability)
+POST	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/availability_process
+
+api_token required (must be owner or manager of calendar)
+
+required keys:
+* start_date
+* end_date
+
+
+## availability_responses#show
+GET https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/availability_response
+
+api_token required - use the response token from availability request email, not a user api_token
+
+no keys required
+
+
+## availability_responses#update (update user availability)
+PATCH	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/availability_response
+
+api_token required - use the response token from availability request email, not a user api_token
+
+required keys:
+* responses: contains a hash with response ids for the keys and availability booleans for the values, e.g.:
+```JSON
+"responses":
+        {"751": true,
+        "752": false,
+        "753": true,
+        "754": false,
+        "755": true,
+        "756": false,
+        "757": true,
+        "758": false,
+        "759": true,
+        "760": false}
+```
