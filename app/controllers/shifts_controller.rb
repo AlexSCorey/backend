@@ -52,18 +52,21 @@ class ShiftsController < ApplicationController
            end_date = params["end_date"].to_date
            target_date = params["target_date"].to_date
            interval = target_date - start_date
+           
             if @calendar.users.owners.include?(current_user) || @calendar.users.managers.include?(current_user)
                 @past_shifts = Shift.where(calendar_id: @calendar.id, start_time:                  start_date.beginning_of_day .. end_date.end_of_day).to_a
+                @new_shifts = []
                 @past_shifts.each do |past_shift|
-                    @shift = Shift.new(
+                    shift = Shift.new(
                         start_time: past_shift.start_time + interval.days,
                         end_time: past_shift.end_time + interval.days,
                         calendar_id: past_shift.calendar_id,
                         capacity: past_shift.capacity,
                         published: past_shift.published
                     )
-                    @shift.users = past_shift.users
-                    @shift.save!
+                    shift.users = past_shift.users
+                    shift.save!
+                    @new_shifts.push(shift)
                 end
                 render "/shifts/copy.json", status: :ok
             else
