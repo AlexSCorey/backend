@@ -13,7 +13,19 @@ class AvailabilityProcessesController < ApplicationController
         render json: {error: "start_date and end_date are required"}, status: :unauthorized
       end
     else
-    render json: nil, status: :unauthorized
+      render json: nil, status: :unauthorized
+    end
+  end
+
+  def assign_shifts
+    @user = current_user
+    @calendar = Calendar.find(params[:calendar_id])
+    @roles = @user.roles.where(calendar_id: @calendar.id).map{|r| r.role}
+    if @roles.include?("manager") || @roles.include?("owner")
+      AvailabilityProcess.find(params[:availability_process_id]).assign_shifts
+      render json: nil, status: :ok
+    else
+      render json: nil, status: :unauthorized
     end
   end
 

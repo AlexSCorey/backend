@@ -22,6 +22,7 @@ class AvailabilityProcess < ApplicationRecord
         usershifts.push(usershift)
       end
     end
+    self.destroy
     return usershifts
   end
 

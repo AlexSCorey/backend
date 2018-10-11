@@ -9,7 +9,6 @@ Rails.application.routes.draw do
   resources :calendars, only: [:index, :create, :show, :update, :destroy] do
 
     resources :swaps, only: [:index, :update]
-    resource :availability_process, only: [:create]
     resource :availability_response, only: [:show, :update]
     resource :invitation, only: [:create]
     resources :notes, only: [:index, :create]
@@ -18,6 +17,9 @@ Rails.application.routes.draw do
     get '/alerts_daily', action: :alerts_daily, controller: 'calendars'
     post '/copy', to: 'shifts#copy'
     
+    resources :availability_processes, only: [:create] do
+      post '/assign_shifts', action: :assign_shifts, controller: 'availability_processes'
+    end
 
     resources :shifts, only: [:index, :create, :update, :destroy] do
       resources :swaps, only: [:create]
