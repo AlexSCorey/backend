@@ -7,13 +7,13 @@ class RolesController < ApplicationController
       calendar_id: @calendar.id,
       role: params[:role])
 
-    if @calendar.users.owners.include?(current_user)
+    if owner
       if @role.save
         render "/roles/create.json", status: :ok
       else
         render json: @role.errors, status: :unprocessable_entity
       end
-    elsif @calendar.users.managers.include?(current_user)
+    elsif manager
       if @role.role != "owner"
         if @role.save
           render "/roles/create.json", status: :ok
@@ -36,13 +36,13 @@ class RolesController < ApplicationController
       calendar_id: @calendar.id,
       role: params[:role])
 
-    if @calendar.users.owners.include?(current_user)
+    if owner
       if @role.destroy
         render json: ('This role has been deleted!'), status: :ok
       else
         render json: @role.errors, status: :unprocessable_entity
       end
-    elsif @calendar.users.managers.include?(current_user)
+    elsif manager
       if @role.role != "owner"
         if @role.destroy
           render json: ('This role has been deleted!'), status: :ok
