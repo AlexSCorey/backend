@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_10_021501) do
+ActiveRecord::Schema.define(version: 2018_10_10_164057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "availability_process_shifts", force: :cascade do |t|
+    t.bigint "availability_process_id"
+    t.bigint "shift_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["availability_process_id"], name: "index_availability_process_shifts_on_availability_process_id"
+    t.index ["shift_id"], name: "index_availability_process_shifts_on_shift_id"
+  end
 
   create_table "availability_processes", force: :cascade do |t|
     t.bigint "calendar_id"

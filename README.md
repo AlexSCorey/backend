@@ -199,14 +199,14 @@ required keys:
 * calendar_id
 
 
-##shifts#myschedule (View of all of a users published schedules for all calendars)
-GET    https://fierce-forest-56311.herokuapp.com/myschedule
+## shifts#myschedule (View of all of a users published schedules for all calendars)
+GET    https://fierce-forest-56311.herokuapp.com/users/:user_id/myschedule
 
 required keys:
 * api_token
 
 
-##shifts#copy (copy calendar from previous)
+## shifts#copy (copy calendar from previous)
 POST    https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/copy
 
 required keys:
@@ -370,3 +370,11 @@ required keys:
         "759": true,
         "760": false}
 ```
+
+
+## availability_processes#assign_shifts (run the algorithm)
+POST https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/availability_processes/:availability_process_id/assign_shifts	
+
+api_token required (must be owner or manager of calendar)
+
+no keys required
