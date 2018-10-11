@@ -22,7 +22,7 @@ class ShiftsController < ApplicationController
     end
 
     def myschedule
-        @user = User.find(params[:user_id])
+        @user = current_user
         @publishedshifts = @user.shifts.where(published: true)
         if @user
             render "/shifts/index2.json", status: :ok

@@ -33,7 +33,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :users, only: [:create, :edit, :update] do
-    get '/myschedule', to: 'shifts#myschedule'
-  end
+  resources :users, only: [:create, :edit, :update]
+  get '/myschedule', to: 'shifts#myschedule'
 end
