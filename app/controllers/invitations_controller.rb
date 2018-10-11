@@ -64,9 +64,9 @@ class InvitationsController < ApplicationController
   end
 
   def set_access
-    if @calendar.users.owners.include?(current_user)
+    if owner
       @access = "owner"
-    elsif @calendar.users.managers.include?(current_user)
+    elsif manager
       @access = "manager"
     end
   end

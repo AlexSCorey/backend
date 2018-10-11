@@ -3,7 +3,7 @@ class UsershiftsController < ApplicationController
   
   def create
     set_calendar
-    if @calendar.users.owners.include?(current_user) || @calendar.users.managers.include?(current_user)
+    if admin_user
       @usershift = Usershift.new(usershift_params)
       if @usershift.save
         render json: ('Employee added to shift.'), status: :ok
@@ -18,7 +18,7 @@ class UsershiftsController < ApplicationController
   def destroy
     set_calendar
     @usershift = Usershift.find(params[:id])
-    if @calendar.users.owners.include?(current_user) || @calendar.users.managers.include?(current_user)
+    if admin_user
       if @usershift.destroy
         render json: ("Empoyee shift deleted!"), status: :ok
       else
