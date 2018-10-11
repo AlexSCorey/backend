@@ -47,10 +47,10 @@ class CalendarsController < ApplicationController
 
   def show
     set_calendar
-    if @calendar.users.owners.include?(current_user)
+    if owner
       @role = "owner"
       render "/calendars/show.json", status: :ok
-    elsif @calendar.users.managers.include?(current_user)
+    elsif manager
       @role = "manager"
       render "/calendars/show.json", status: :ok
     elsif @calendar.users.employees.include?(current_user)
@@ -63,10 +63,10 @@ class CalendarsController < ApplicationController
 
   def update
     set_calendar
-    if @calendar.users.owners.include?(current_user)
+    if owner
       @role = "owner"
       update_calendar
-    elsif @calendar.users.managers.include?(current_user)
+    elsif manager
       @role = "manager"
       update_calendar
     else
@@ -76,7 +76,7 @@ class CalendarsController < ApplicationController
 
   def destroy
     set_calendar
-    if @calendar.users.owners.include?(current_user)
+    if owner
       if @calendar.destroy
         render json: ('Calendar deleted!'), status: :ok
       else
@@ -89,9 +89,9 @@ class CalendarsController < ApplicationController
 
   def invite
     set_calendar
-    if @calendar.users.owners.include?(current_user)
+    if owner
       # invite using email
-    elsif @calendar.users.managers.include?(current_user)
+    elsif manager
       # invite using email, exclude owner role
     else
       render json: '{}', status: :unauthorized
