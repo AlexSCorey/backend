@@ -171,7 +171,6 @@ required keys:
 * end_time  (must be after start time)
 * calendar_id
 * capacity (must be greater than 0)
-* published (boolean)
 
 
 ## shifts#update (update shifts on calendar)
