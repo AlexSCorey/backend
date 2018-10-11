@@ -200,10 +200,10 @@ required keys:
 
 
 ##shifts#myschedule (View of all of a users published schedules for all calendars)
-GET    https://fierce-forest-56311.herokuapp.com/users/:user_id/myschedule
+GET    https://fierce-forest-56311.herokuapp.com/myschedule
 
 required keys:
-* user_id
+* api_token
 
 
 ##shifts#copy (copy calendar from previous)
