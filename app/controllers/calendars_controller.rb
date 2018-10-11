@@ -19,6 +19,7 @@ class CalendarsController < ApplicationController
       if @calendar.users.include?(@user)
         render json: {
           summaries: @calendar.sql_summary_query(params["start_date"], params["end_date"]),
+          availability_processes: @calendar.availability_process_summary(params["start_date"], params["end_date"]),
           roles: @user.roles.where(calendar_id: @calendar.id).map{|r| r.role}}
       else
         render json: '{}', status: :unauthorized

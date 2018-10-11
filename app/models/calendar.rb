@@ -21,6 +21,7 @@ class Calendar < ApplicationRecord
   has_many :notes
   has_many :shifts
   has_many :swaps, through: :shifts
+  has_many :availability_processes
 
   def sql_summary_query(start_date, end_date)
     # this query should be rewritten to sanitize inputs
@@ -86,6 +87,25 @@ ORDER BY 1|
       date_index += 1
     end
     return shifts
+  end
+
+  def availability_process_summary(start_date, end_date)
+    responses = []
+    processes = self.availability_processes.where("availability_processes.start_date <= ? AND availability_processes.end_date > ?",
+      start_date, start_date).or(
+          self.availability_processes.where("availability_processes.start_date > ? AND availability_processes.start_date < ?",
+              start_date, end_date)).to_a
+    processes.each do |process|
+      response = {
+        id: process.id,
+        start_date: process.start_date,
+        end_date: process.end_date,
+        requests: process.availability_requests.count,
+        completed_requests: process.availability_requests.where(complete: true).count
+      }
+      responses.push(response)
+    end
+    return responses
   end
 
   private
