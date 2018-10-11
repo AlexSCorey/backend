@@ -24,10 +24,17 @@ class ShiftsController < ApplicationController
     def myschedule
         @user = current_user
         @publishedshifts = @user.shifts.where(published: true)
-        if @user
-            render "/shifts/index2.json", status: :ok
+        if params["start_date"] && params["end_date"]
+            start_date = params["start_date"].to_date
+            end_date = params["end_date"].to_date
+            if @user
+                @shifts = Shift.where(start_time: start_date.beginning_of_day .. end_date.end_of_day)
+                render "/shifts/index2.json", status: :ok
+            else
+                render json: ('You do not have access to these shifts'), status: :unauthorized
+            end
         else
-            render json: ('You do not have access to these shifts'), status: :unauthorized
+            render json: ("start_date and end_date are required"), status: :unprocessable_entity
         end
     end
 
