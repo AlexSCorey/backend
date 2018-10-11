@@ -6,10 +6,6 @@ class ApplicationController < ActionController::API
     helper_method :owner
     helper_method :manager
 
-
-
-
-
     private
 
     def admin_user
