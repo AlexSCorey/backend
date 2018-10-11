@@ -72,6 +72,8 @@ class ShiftsController < ApplicationController
             else
                 render json: ("You do not have access to copy shifts"), status: :unauthorized
             end
+        else
+            render json: ("Need to provide start_date, end_date, and target_date")
         end
     end
 
