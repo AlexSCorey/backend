@@ -45,8 +45,8 @@ class User < ApplicationRecord
     end
 
     def conflicting_shifts(input_shift)
-        self.shifts.where("shifts.start_time < ? AND shifts.end_time > ?",
-            input_shift.start_time, input_shift.end_time).or(
+        self.shifts.where("shifts.start_time <= ? AND shifts.end_time > ?",
+            input_shift.start_time, input_shift.start_time).or(
                 self.shifts.where("shifts.start_time > ? AND shifts.start_time < ?",
                     input_shift.start_time, input_shift.end_time)
             )

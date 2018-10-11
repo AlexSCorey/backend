@@ -5,6 +5,26 @@ class AvailabilityProcess < ApplicationRecord
   has_many :availability_process_shifts, dependent: :destroy
   has_many :shifts, through: :availability_process_shifts
 
+  def assign_shifts
+    shifts = self.shifts.to_a
+    usershifts = []
+    while shifts.length > 0
+      shifts.reject!{|shift| shift.unconflicted_available_users.count == 0}
+      shifts.reject!{|shift| shift.users.count >= shift.capacity}
+      if shifts.any?
+        shifts.sort_by!{|shift| shift.unconflicted_available_users.count}
+        shift = shifts.first
+        users = shift.unconflicted_available_users
+        users.sort_by!{|user| user.shift_time_in_availability_process(self)}
+        user = users.first
+        usershift = Usershift.new(user_id: user.id, shift_id: shift.id)
+        usershift.save!
+        usershifts.push(usershift)
+      end
+    end
+    return usershifts
+  end
+
   def self.seed(calendar_id, start_date, end_date, chance)
 
     process = AvailabilityProcess.new(
