@@ -34,7 +34,7 @@ class ShiftsController < ApplicationController
 
     def create
         set_calendar
-        if @calendar.users.owners.include?(current_user) || @calendar.users.managers.include?(current_user)
+        if admin_user
           @shift = Shift.new(shift_params)
             if @shift.save
                 render "/shifts/create.json", status: :ok
@@ -53,7 +53,7 @@ class ShiftsController < ApplicationController
            target_date = params["target_date"].to_date
            interval = target_date - start_date
            
-            if @calendar.users.owners.include?(current_user) || @calendar.users.managers.include?(current_user)
+            if admin_user
                 @past_shifts = Shift.where(calendar_id: @calendar.id, start_time:                  start_date.beginning_of_day .. end_date.end_of_day).to_a
                 @new_shifts = []
                 @past_shifts.each do |past_shift|
@@ -80,7 +80,7 @@ class ShiftsController < ApplicationController
     def update
         set_calendar
         set_shift
-        if @calendar.users.owners.include?(current_user) || @calendar.users.managers.include?(current_user)
+        if admin_user
            if @shift.update_attributes(shift_params)
               render "/shifts/update.json", status: :ok
            else
@@ -93,7 +93,7 @@ class ShiftsController < ApplicationController
     def destroy
         set_calendar
         set_shift
-        if @calendar.users.owners.include?(current_user) || @calendar.users.managers.include?(current_user)
+        if admin_user
             if @shift.destroy
                 render json: ("Shift deleted!"), status: :ok
             else
