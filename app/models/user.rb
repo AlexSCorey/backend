@@ -44,7 +44,20 @@ class User < ApplicationRecord
         save!
     end
 
-   
+    def conflicting_shifts(input_shift)
+        self.shifts.where("shifts.start_time <= ? AND shifts.end_time > ?",
+            input_shift.start_time, input_shift.start_time).or(
+                self.shifts.where("shifts.start_time > ? AND shifts.start_time < ?",
+                    input_shift.start_time, input_shift.end_time)
+            )
+    end
+
+    def shift_time_in_availability_process(process)
+        duration = 0
+        shifts = process.shifts.merge(self.shifts)
+        shifts.each {|shift| duration += shift.duration}
+        return duration
+    end
 
     private
 

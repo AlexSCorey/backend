@@ -114,7 +114,7 @@ Calendar.all.each do |calendar|
         start_time: start_time,
         end_time: end_time,
         calendar_id: calendar.id,
-        capacity: rand(10),
+        capacity: rand(10)+1,
         published: BOOLEANS.sample
       )
       shift.save
