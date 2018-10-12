@@ -336,7 +336,7 @@ required keys:
 
 
 ## availability_processes#create (request availability)
-POST	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/availability_process
+POST	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/availability_processes
 
 api_token required (must be owner or manager of calendar)
 
