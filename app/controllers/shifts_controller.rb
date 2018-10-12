@@ -54,13 +54,15 @@ class ShiftsController < ApplicationController
     def copy
         set_calendar
         if params["start_date"] && params["end_date"] && params["target_date"]
-           start_date = params["start_date"].to_date
-           end_date = params["end_date"].to_date
-           target_date = params["target_date"].to_date
+           start_date = Time.zone.parse(params["start_date"])
+           end_date = Time.zone.parse(params["end_date"])
+           target_date = Time.zone.parse(params["target_date"])
            interval = target_date - start_date
            
             if admin_user
-                @past_shifts = Shift.where(calendar_id: @calendar.id, start_time:                  start_date.beginning_of_day .. end_date.end_of_day).to_a
+                @past_shifts = Shift.where(
+                    calendar_id: @calendar.id, 
+                    start_time: start_date.beginning_of_day .. end_date.end_of_day).to_a
                 @new_shifts = []
                 @past_shifts.each do |past_shift|
                     shift = Shift.new(
