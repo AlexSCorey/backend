@@ -14,12 +14,15 @@ class CalendarsController < ApplicationController
   def summary
     @user = current_user
     @calendar = Calendar.find(params[:calendar_id])
+    Time.zone = @calendar.time_zone
 
     if params["start_date"] && params["end_date"]
+      start_date = Time.zone.parse(params["start_date"])
+      end_date = Time.zone.parse(params["end_date"])
       if @calendar.users.include?(@user)
         render json: {
-          summaries: @calendar.sql_summary_query(params["start_date"], params["end_date"]),
-          availability_processes: @calendar.availability_process_summary(params["start_date"], params["end_date"]),
+          summaries: @calendar.sql_summary_query(start_date, end_date),
+          availability_processes: @calendar.availability_process_summary(start_date, end_date),
           roles: @user.roles.where(calendar_id: @calendar.id).map{|r| r.role}}
       else
         render json: '{}', status: :unauthorized
@@ -87,17 +90,6 @@ class CalendarsController < ApplicationController
     end
   end
 
-  def invite
-    set_calendar
-    if owner
-      # invite using email
-    elsif manager
-      # invite using email, exclude owner role
-    else
-      render json: '{}', status: :unauthorized
-    end
-  end
-
   def alerts_daily
     @user = current_user
     @calendar = Calendar.find(params[:calendar_id])
@@ -105,7 +97,7 @@ class CalendarsController < ApplicationController
     if params["date"]
       if @calendar.users.owners.include?(@user) ||
         @calendar.users.managers.include?(@user)
-        render json: @calendar.alerts_daily(params["date"])
+        render json: @calendar.alerts_daily(Time.zone.parse(params["date"]))
       else
         render json: '{}', status: :unauthorized
       end
@@ -127,6 +119,7 @@ class CalendarsController < ApplicationController
 
     def set_calendar
         @calendar = Calendar.find(params[:id])
+        Time.zone = @calendar.time_zone
     end
 
     def update_calendar
