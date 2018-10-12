@@ -112,18 +112,18 @@ required keys:
 
 
 ## password#forgot
-POST	https://fierce-forest-56311.herokuapp.com/passwords/forgot (request new pw)
+POST	https://fierce-forest-56311.herokuapp.com/password/forgot (request new pw)
 
 required keys
 * email
 
 ## password#reset
-POST	https://fierce-forest-56311.herokuapp.com/passwords/reset (reset new pw)
+POST	https://fierce-forest-56311.herokuapp.com/password/reset (reset new pw)
 
 required keys
 * email
 * new password
-* reset_password_token (only valid 2 hours, destroys after 1 use)
+* reset_password_token (only valid 2 hours, destroys after 1 use, key-value pair not authorization)
 
 
 
