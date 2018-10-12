@@ -6,8 +6,8 @@ class ShiftsController < ApplicationController
         @user = current_user
         @roles = @user.roles.where(calendar_id: @calendar.id).map{|r| r.role}
         if params["start_date"] && params["end_date"]
-            start_date = params["start_date"].to_date
-            end_date = params["end_date"].to_date
+            start_date = Time.zone.parse(params["start_date"])
+            end_date = Time.zone.parse(params["end_date"])
             if @calendar.users.include?(@user)
                 @shifts = Shift.where(
                     calendar_id: @calendar.id,
@@ -23,18 +23,11 @@ class ShiftsController < ApplicationController
 
     def myschedule
         @user = current_user
-        @publishedshifts = @user.shifts.where(published: true)
-        if params["start_date"] && params["end_date"]
-            start_date = params["start_date"].to_date
-            end_date = params["end_date"].to_date
-            if @user
-                @shifts = Shift.where(start_time: start_date.beginning_of_day .. end_date.end_of_day)
-                render "/shifts/index2.json", status: :ok
-            else
-                render json: ('You do not have access to these shifts'), status: :unauthorized
-            end
+        if @user
+            @shifts = Shift.where("end_time > ?", Time.current).order("start_time ASC").limit(100)
+            render "/shifts/index2.json", status: :ok
         else
-            render json: ("start_date and end_date are required"), status: :unprocessable_entity
+            render json: ('You do not have access to these shifts'), status: :unauthorized
         end
     end
 
@@ -42,7 +35,13 @@ class ShiftsController < ApplicationController
     def create
         set_calendar
         if admin_user
-          @shift = Shift.new(shift_params)
+          @shift = Shift.new(
+            start_time: Time.zone.parse(params[:start_time]),
+            end_time: Time.zone.parse(params[:end_time]),
+            calendar_id: params[:calendar_id],
+            capacity: params[:capacity],
+            published: params[:published]
+          )
             if @shift.save
                 render "/shifts/create.json", status: :ok
             else
@@ -55,13 +54,15 @@ class ShiftsController < ApplicationController
     def copy
         set_calendar
         if params["start_date"] && params["end_date"] && params["target_date"]
-           start_date = params["start_date"].to_date
-           end_date = params["end_date"].to_date
-           target_date = params["target_date"].to_date
+           start_date = Time.zone.parse(params["start_date"])
+           end_date = Time.zone.parse(params["end_date"])
+           target_date = Time.zone.parse(params["target_date"])
            interval = target_date - start_date
            
             if admin_user
-                @past_shifts = Shift.where(calendar_id: @calendar.id, start_time:                  start_date.beginning_of_day .. end_date.end_of_day).to_a
+                @past_shifts = Shift.where(
+                    calendar_id: @calendar.id, 
+                    start_time: start_date.beginning_of_day .. end_date.end_of_day).to_a
                 @new_shifts = []
                 @past_shifts.each do |past_shift|
                     shift = Shift.new(
@@ -88,7 +89,12 @@ class ShiftsController < ApplicationController
         set_calendar
         set_shift
         if admin_user
-           if @shift.update_attributes(shift_params)
+           if @shift.update_attributes(
+            start_time: Time.zone.parse(params[:start_time]),
+            end_time: Time.zone.parse(params[:end_time]),
+            calendar_id: params[:calendar_id],
+            capacity: params[:capacity],
+            published: params[:published])
               render "/shifts/update.json", status: :ok
            else
               render json: @shift.errors, status: :uprocessable_entity
@@ -116,6 +122,7 @@ class ShiftsController < ApplicationController
     
     def set_calendar
         @calendar = Calendar.find(params[:calendar_id])
+        Time.zone = @calendar.time_zone
     end
 
     def set_shift

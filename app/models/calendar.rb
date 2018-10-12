@@ -45,7 +45,7 @@ GROUP BY usershifts.shift_id) AS "usershift_query"
 ON (shifts.id = usershift_query.shift_id)
 WHERE shifts.calendar_id=| + self.id.to_s + %Q|
 AND date_trunc('day', shifts.start_time) BETWEEN '| +
-start_date + %Q|' AND '| + end_date + %Q|'
+start_date.utc.to_s + %Q|' AND '| + end_date.utc.to_s + %Q|'
 GROUP BY 1 
 ORDER BY 1|
     return ActiveRecord::Base.connection.execute(sql)
@@ -114,8 +114,8 @@ ORDER BY 1|
     self.users.distinct.each do |user|
       hours = 0
       user.shifts.where(calendar_id: self.id).each do |shift|
-        hours += shift.duration_during(date.to_date.beginning_of_day,
-          date.to_date.end_of_day)/3600
+        hours += shift.duration_during(date.beginning_of_day,
+          date.end_of_day)/3600
       end
       if hours > self.employee_hour_threshold_daily
         response[:alerts][:employee_hours_threshold].push({
@@ -128,8 +128,8 @@ ORDER BY 1|
 
   def gather_unassigned_shift_capacity_alerts(date, response)
     shifts = self.shifts.where('start_time BETWEEN ? AND ?',
-      date.to_date.beginning_of_day,
-      date.to_date.end_of_day)
+      date.beginning_of_day,
+      date.end_of_day)
     shifts.each do |shift|
       if shift.usershifts.count < shift.capacity
         response[:alerts][:unassigned_shift_capacity].push({

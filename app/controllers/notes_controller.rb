@@ -7,13 +7,15 @@ class NotesController < ApplicationController
     if params["start_date"] && params["end_date"]
       if @calendar.users.owners.include?(@user) ||
         @calendar.users.managers.include?(@user)
+        start_date = Time.zone.parse(params["start_date"])
+        end_date = Time.zone.parse(params["end_date"])
         @notes = Note.where(calendar_id: @calendar.id,
-          date: params["start_date"]..params["end_date"])
+          date: start_date..end_date)
         render "/notes/index.json", status: :ok
       elsif @calendar.users.employees.include?(@user)
         @notes = Note.where(calendar_id: @calendar.id,
           user_id: @user.id,
-          date: params["start_date"]..params["end_date"])
+          date: start_date..end_date)
           render "/notes/index.json", status: :ok
       else
         render json: '{}', status: :unauthorized
@@ -28,7 +30,10 @@ class NotesController < ApplicationController
     set_calendar
     if @calendar.users.include?(@user)
       @note = Note.new({calendar_id: @calendar.id,
-        user_id: @user.id}.merge(note_params))
+        user_id: @user.id,
+        text: params[:text],
+        date: Time.zone.parse(params[:date])
+      })
       if @note.save
         render json: @note, status: :ok
       else
@@ -47,6 +52,7 @@ class NotesController < ApplicationController
 
   def set_calendar
     @calendar = Calendar.find(params[:calendar_id])
+    Time.zone = @calendar.time_zone
   end
 
   def note_params
