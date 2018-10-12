@@ -3,11 +3,12 @@ class AvailabilityProcessesController < ApplicationController
   def create
     @user = current_user
     @calendar = Calendar.find(params[:calendar_id])
+    Time.zone = @calendar.time_zone
     @roles = @user.roles.where(calendar_id: @calendar.id).map{|r| r.role}
     if @roles.include?("manager") || @roles.include?("owner")
       if params[:start_date] && params[:end_date]
-        start_date = params["start_date"].to_date
-        end_date = params["end_date"].to_date
+        start_date = Time.zone.parse(params["start_date"])
+        end_date = Time.zone.parse(params["end_date"])
         generate_availability_objects(@calendar, start_date, end_date)
       else
         render json: {error: "start_date and end_date are required"}, status: :unauthorized
