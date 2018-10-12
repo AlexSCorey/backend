@@ -89,7 +89,12 @@ class ShiftsController < ApplicationController
         set_calendar
         set_shift
         if admin_user
-           if @shift.update_attributes(shift_params)
+           if @shift.update_attributes(
+            start_time: Time.zone.parse(params[:start_time]),
+            end_time: Time.zone.parse(params[:end_time]),
+            calendar_id: params[:calendar_id],
+            capacity: params[:capacity],
+            published: params[:published])
               render "/shifts/update.json", status: :ok
            else
               render json: @shift.errors, status: :uprocessable_entity
