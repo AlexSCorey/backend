@@ -73,6 +73,7 @@ index = 1
     password: "password" + index.to_s,
     phone_number: "123-456-7890"
   })
+  index += 1
 end
 
 employees.each do |user|
@@ -137,7 +138,7 @@ Calendar.all.each do |calendar|
       users.each do |user|
         if shift.users.count < shift.capacity
           if BOOLEANS.sample
-            if user.conflicting_shifts(shift).count = 0
+            if user.conflicting_shifts(shift).count == 0
               Usershift.new(
                 user_id: user.id,
                 shift_id: shift.id
