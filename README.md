@@ -274,7 +274,7 @@ optional keys:
 
 ## users#update
 
-PATCH https://fierce-forest-56311.herokuapp.com/users/:id
+PATCH https://fierce-forest-56311.herokuapp.com/users/
 
 api_token required
 
