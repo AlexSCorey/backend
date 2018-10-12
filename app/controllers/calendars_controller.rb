@@ -93,6 +93,7 @@ class CalendarsController < ApplicationController
   def alerts_daily
     @user = current_user
     @calendar = Calendar.find(params[:calendar_id])
+    Time.zone = @calendar.time_zone
 
     if params["date"]
       if @calendar.users.owners.include?(@user) ||

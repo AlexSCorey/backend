@@ -128,8 +128,8 @@ ORDER BY 1|
 
   def gather_unassigned_shift_capacity_alerts(date, response)
     shifts = self.shifts.where('start_time BETWEEN ? AND ?',
-      date.to_date.beginning_of_day,
-      date.to_date.end_of_day)
+      date.beginning_of_day,
+      date.end_of_day)
     shifts.each do |shift|
       if shift.usershifts.count < shift.capacity
         response[:alerts][:unassigned_shift_capacity].push({
