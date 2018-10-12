@@ -64,6 +64,23 @@ CALENDARS.each do |calendar_source|
   users.each{|u| Role.add(u, calendar, "employee")}
 end
 
+employees = []
+index = 1
+50.times do
+  employees.push({
+    name: "employee" + index.to_s,
+    email: "shiftgear+" + index.to_s + "@googlegroups.com",
+    password: "password" + index.to_s,
+    phone_number: "123-456-7890"
+  })
+  index += 1
+end
+
+employees.each do |user|
+  employee = User.create!(user)
+  Role.add(employee, Calendar.all.sample, "employee")
+end
+
 NOTE_TEXT = [
   "there is going to be a parade on this day, watch out for crowds",
   "I'll be on vacation in Hawaii on this day",
@@ -119,12 +136,14 @@ Calendar.all.each do |calendar|
       )
       shift.save
       users.each do |user|
-        if shift.users.length < shift.capacity
+        if shift.users.count < shift.capacity
           if BOOLEANS.sample
-            Usershift.new(
-              user_id: user.id,
-              shift_id: shift.id
-            ).save
+            if user.conflicting_shifts(shift).count == 0
+              Usershift.new(
+                user_id: user.id,
+                shift_id: shift.id
+              ).save
+            end
           end
         end
       end
@@ -134,7 +153,7 @@ Calendar.all.each do |calendar|
 end
 
 Usershift.all.each do |usershift|
-  if usershift.id % 11 == 0 &&
+  if usershift.id % 99 == 0 &&
     usershift.shift.start_time > DateTime.now
     Swap.new(requesting_user_id: usershift.user_id,
       shift_id: usershift.shift_id).save
