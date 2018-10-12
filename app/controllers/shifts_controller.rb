@@ -42,7 +42,13 @@ class ShiftsController < ApplicationController
     def create
         set_calendar
         if admin_user
-          @shift = Shift.new(shift_params)
+          @shift = Shift.new(
+            start_time: Time.zone.parse(params[:start_time]),
+            end_time: Time.zone.parse(params[:end_time]),
+            calendar_id: params[:calendar_id],
+            capacity: params[:capacity],
+            published: params[:published]
+          )
             if @shift.save
                 render "/shifts/create.json", status: :ok
             else
@@ -116,6 +122,7 @@ class ShiftsController < ApplicationController
     
     def set_calendar
         @calendar = Calendar.find(params[:calendar_id])
+        Time.zone = @calendar.time_zone
     end
 
     def set_shift
