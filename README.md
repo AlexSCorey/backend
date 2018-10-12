@@ -200,14 +200,13 @@ required keys:
 
 
 
-##shifts#myschedule (View of all of a users published schedules for all calendars)
-GET    https://fierce-forest-56311.herokuapp.com/myschedule?start_date=:start_date&end_date=:end_date
+##shifts#myschedule (View of all of a users published schedules for all calendars limit of 100)
+GET    https://fierce-forest-56311.herokuapp.com/myschedule
 
 
 required keys:
 * api_token
-* start_date
-* end_date
+
 
 
 ## shifts#copy (copy calendar from previous)

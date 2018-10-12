@@ -6,8 +6,8 @@ class ShiftsController < ApplicationController
         @user = current_user
         @roles = @user.roles.where(calendar_id: @calendar.id).map{|r| r.role}
         if params["start_date"] && params["end_date"]
-            start_date = params["start_date"].to_date
-            end_date = params["end_date"].to_date
+            start_date = Time.zone.parse(params["start_date"])
+            end_date = Time.zone.parse(params["end_date"])
             if @calendar.users.include?(@user)
                 @shifts = Shift.where(
                     calendar_id: @calendar.id,
@@ -23,18 +23,11 @@ class ShiftsController < ApplicationController
 
     def myschedule
         @user = current_user
-        @publishedshifts = @user.shifts.where(published: true)
-        if params["start_date"] && params["end_date"]
-            start_date = params["start_date"].to_date
-            end_date = params["end_date"].to_date
-            if @user
-                @shifts = Shift.where(start_time: start_date.beginning_of_day .. end_date.end_of_day)
-                render "/shifts/index2.json", status: :ok
-            else
-                render json: ('You do not have access to these shifts'), status: :unauthorized
-            end
+        if @user
+            @shifts = Shift.where("end_time > ?", Time.current).order("start_time ASC").limit(100)
+            render "/shifts/index2.json", status: :ok
         else
-            render json: ("start_date and end_date are required"), status: :unprocessable_entity
+            render json: ('You do not have access to these shifts'), status: :unauthorized
         end
     end
 
