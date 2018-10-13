@@ -6,19 +6,15 @@ class AvailabilityProcess < ApplicationRecord
   has_many :shifts, through: :availability_process_shifts
 
   def assign_shifts
-    shifts = self.shifts.to_a
+    shifts = self.viable_shifts_by_unconflicted_available_users
     usershifts = []
     while shifts.length > 0
-      shifts.reject!{|shift| shift.unconflicted_available_users.count == 0}
-      shifts.reject!{|shift| shift.users.count >= shift.capacity}
-      if shifts.any?
-        shifts.sort_by!{|shift| shift.unconflicted_available_users.count}
-        shift = shifts.first
-        user = shift.unconflicted_available_users.first
-        usershift = Usershift.new(user_id: user.id, shift_id: shift.id)
-        usershift.save!
-        usershifts.push(usershift)
-      end
+      shift = shifts.first
+      user = shift.unconflicted_available_users.first
+      usershift = Usershift.new(user_id: user.id, shift_id: shift.id)
+      usershift.save!
+      usershifts.push(usershift)
+      shifts = self.viable_shifts_by_unconflicted_available_users
     end
     self.destroy
     return usershifts
