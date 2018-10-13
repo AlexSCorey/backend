@@ -14,9 +14,7 @@ class AvailabilityProcess < ApplicationRecord
       if shifts.any?
         shifts.sort_by!{|shift| shift.unconflicted_available_users.count}
         shift = shifts.first
-        users = shift.unconflicted_available_users
-        users.sort_by!{|user| user.shift_time_in_availability_process(self)}
-        user = users.first
+        user = shift.unconflicted_available_users.first
         usershift = Usershift.new(user_id: user.id, shift_id: shift.id)
         usershift.save!
         usershifts.push(usershift)
