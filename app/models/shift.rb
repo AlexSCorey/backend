@@ -64,7 +64,7 @@ class Shift < ApplicationRecord
                  u2.id = u.id AND
                  ((s2.start_time <= s.start_time AND s2.end_time > s.start_time) OR
                  (s2.start_time > s.start_time AND s2.start_time < s.end_time))) = 0
-    ORDER BY hours DESC|
+    ORDER BY hours ASC|
         User.find_by_sql(pgsql)
     end
 
