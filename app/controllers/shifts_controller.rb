@@ -24,7 +24,7 @@ class ShiftsController < ApplicationController
     def myschedule
         @user = current_user
         if @user
-            @shifts = Shift.where("end_time > ?", Time.current).order("start_time ASC").limit(100)
+            @shifts = @user.shifts.where("end_time > ?", Time.current).order("start_time ASC").limit(100)
             render "/shifts/index2.json", status: :ok
         else
             render json: ('You do not have access to these shifts'), status: :unauthorized
