@@ -141,7 +141,7 @@ ORDER BY 1|
       hours = 0
       user.shifts.where(calendar_id: self.id).each do |shift|
         hours += shift.duration_during(date.beginning_of_day,
-          (date + 7.days).end_of_day)/3600
+          (date + 6.days).end_of_day)/3600
       end
       if hours > self.employee_hour_threshold_weekly
         response[:alerts][:weekly_hours_threshold].push({
