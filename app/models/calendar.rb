@@ -6,7 +6,7 @@ class Calendar < ApplicationRecord
   validates :name, presence: true
   validate :time_zone_exists
 
-  has_many :roles
+  has_many :roles, dependent: :destroy
   has_many :users, through: :roles do
     def owners
         where("roles.role = 'owner'", true)
@@ -18,10 +18,10 @@ class Calendar < ApplicationRecord
         where("roles.role = 'employee'", true)
     end
   end
-  has_many :notes
-  has_many :shifts
-  has_many :swaps, through: :shifts
-  has_many :availability_processes
+  has_many :notes, dependent: :destroy
+  has_many :shifts, dependent: :destroy
+  has_many :swaps, through: :shifts, dependent: :destroy
+  has_many :availability_processes, dependent: :destroy
 
   def sql_summary_query(start_date, end_date)
     # this query should be rewritten to sanitize inputs
