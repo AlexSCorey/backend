@@ -40,11 +40,32 @@ class Shift < ApplicationRecord
     end
 
     def unconflicted_available_users
-        response = []
-        self.available_users.each do |user|
-            response.push(user) unless user.conflicting_shifts(self).any?
-        end
-        return response
+        pgsql = %Q|SELECT 
+        u.*,
+        COALESCE((SELECT SUM(s3.end_time - s3.start_time) FROM shifts s3, usershifts us2 WHERE s3.id = us2.shift_id AND us2.user_id = u.id AND s3.id IN (SELECT aps2.shift_id FROM availability_process_shifts aps2 WHERE aps2.availability_process_id = ap.id)), INTERVAL '0 hours') AS hours 
+    FROM 
+       users u, 
+       availability_responses res, 
+       availability_requests req, 
+       availability_processes ap,
+       availability_process_shifts aps,
+       shifts s
+    WHERE u.id = req.user_id AND
+          res.availability_request_id = req.id AND
+          res.shift_id = s.id AND
+          req.availability_process_id = ap.id AND
+          ap.id = aps.availability_process_id AND
+          s.id = aps.shift_id AND
+          res.available = 't' AND
+          s.id = | + self.id.to_s + %Q| AND
+          (SELECT COUNT(*) FROM users u2, usershifts us, shifts s2
+           WHERE u2.id = us.user_id AND
+                 s2.id = us.shift_id AND
+                 u2.id = u.id AND
+                 ((s2.start_time <= s.start_time AND s2.end_time > s.start_time) OR
+                 (s2.start_time > s.start_time AND s2.start_time < s.end_time))) = 0
+    ORDER BY hours ASC|
+        User.find_by_sql(pgsql)
     end
 
     private
