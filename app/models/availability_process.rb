@@ -61,4 +61,104 @@ class AvailabilityProcess < ApplicationRecord
     return process
   end
 
+  def shifts_by_unconflicted_available_users
+    pgsql = %Q|SELECT
+    s.*,
+    (SELECT 
+        COUNT(u.*)
+    FROM
+        users u, 
+        availability_responses res, 
+        availability_requests req, 
+        availability_processes ap,
+        availability_process_shifts aps2,
+        shifts s2
+    WHERE
+        u.id = req.user_id AND
+        res.availability_request_id = req.id AND
+        res.shift_id = s2.id AND
+        req.availability_process_id = ap.id AND
+        ap.id = aps2.availability_process_id AND
+        s2.id = aps2.shift_id AND
+        res.available = TRUE AND
+        s2.id = s.id AND
+        (SELECT COUNT(*) FROM users u2, usershifts us, shifts s3
+         WHERE u2.id = us.user_id AND
+             s3.id = us.shift_id AND
+             u2.id = u.id AND
+             ((s3.start_time <= s2.start_time AND s3.end_time > s2.start_time) OR
+             (s3.start_time > s2.start_time AND s3.start_time < s2.end_time))) = 0) AS unconflicted_available_users
+FROM
+    shifts s,
+    availability_process_shifts aps
+WHERE
+    s.id = aps.shift_id AND
+    aps.availability_process_id = | + self.id.to_s + %Q|
+ORDER BY unconflicted_available_users ASC|
+
+    Shift.find_by_sql(pgsql)
+  end
+
+  def viable_shifts_by_unconflicted_available_users
+    pgsql = %Q|SELECT
+    s.*,
+    (SELECT 
+        COUNT(u.*)
+    FROM
+        users u, 
+        availability_responses res, 
+        availability_requests req, 
+        availability_processes ap,
+        availability_process_shifts aps2,
+        shifts s2
+    WHERE
+        u.id = req.user_id AND
+        res.availability_request_id = req.id AND
+        res.shift_id = s2.id AND
+        req.availability_process_id = ap.id AND
+        ap.id = aps2.availability_process_id AND
+        s2.id = aps2.shift_id AND
+        res.available = TRUE AND
+        s2.id = s.id AND
+        (SELECT COUNT(*) FROM users u2, usershifts us, shifts s3
+         WHERE u2.id = us.user_id AND
+             s3.id = us.shift_id AND
+             u2.id = u.id AND
+             ((s3.start_time <= s2.start_time AND s3.end_time > s2.start_time) OR
+             (s3.start_time > s2.start_time AND s3.start_time < s2.end_time))) = 0) AS unconflicted_available_users
+FROM
+    shifts s,
+    availability_process_shifts aps
+WHERE
+    s.id = aps.shift_id AND
+    aps.availability_process_id = | + self.id.to_s + %Q| AND
+    (SELECT 
+            COUNT(u.*)
+        FROM
+            users u, 
+            availability_responses res, 
+            availability_requests req, 
+            availability_processes ap,
+            availability_process_shifts aps2,
+            shifts s2
+        WHERE
+            u.id = req.user_id AND
+            res.availability_request_id = req.id AND
+            res.shift_id = s2.id AND
+            req.availability_process_id = ap.id AND
+            ap.id = aps2.availability_process_id AND
+            s2.id = aps2.shift_id AND
+            res.available = TRUE AND
+            s2.id = s.id AND
+            (SELECT COUNT(*) FROM users u2, usershifts us, shifts s3
+             WHERE u2.id = us.user_id AND
+                 s3.id = us.shift_id AND
+                 u2.id = u.id AND
+                 ((s3.start_time <= s2.start_time AND s3.end_time > s2.start_time) OR
+                 (s3.start_time > s2.start_time AND s3.start_time < s2.end_time))) = 0) > 0
+ORDER BY unconflicted_available_users ASC|
+
+    Shift.find_by_sql(pgsql)
+  end
+
 end
