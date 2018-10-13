@@ -67,6 +67,13 @@ api_token required - must be manager or owner of calendar
 query string required: the date argument in the URL is strictly required.  Replace :date with the appropriate date, e.g.: ?start_date=2018-06-30
 
 
+## calendars#alerts_weekly
+GET	https://fierce-forest-56311.herokuapp.com/calendars/:calendar_id/alerts_weekly?date=:date
+
+
+api_token required - must be manager or owner of calendar
+
+query string required: the date argument in the URL is strictly required.  Replace :date with the appropriate date of the sunday upon which the week starts, e.g.: ?start_date=2018-10-14
 
 
 ## invitations#create (invite to calendar via email)
