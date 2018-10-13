@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
     get '/summary', action: :summary, controller: 'calendars'
     get '/alerts_daily', action: :alerts_daily, controller: 'calendars'
+    get '/alerts_weekly', action: :alerts_weekly, controller: 'calendars'
     post '/copy', to: 'shifts#copy'
     
     resources :availability_processes, only: [:create] do

@@ -53,11 +53,21 @@ ORDER BY 1|
 
   def alerts_daily(date)
     response = {date: date, alerts: {
-      employee_hours_threshold: [],
+      daily_hours_threshold: [],
       unassigned_shift_capacity: []
     }}
-    gather_employee_hours_alerts_alerts(date, response)
-    gather_unassigned_shift_capacity_alerts(date, response)
+    gather_daily_hours_alerts(date, response)
+    gather_unassigned_shift_capacity_alerts(date, date, response)
+    return response
+  end
+
+  def alerts_weekly(date)
+    response = {date: date, alerts: {
+      weekly_hours_threshold: [],
+      unassigned_shift_capacity: []
+    }}
+    gather_weekly_hours_alerts(date, response)
+    gather_unassigned_shift_capacity_alerts(date, date + 7.days, response)
     return response
   end
 
@@ -110,7 +120,7 @@ ORDER BY 1|
 
   private
 
-  def gather_employee_hours_alerts_alerts(date, response)
+  def gather_daily_hours_alerts(date, response)
     self.users.distinct.each do |user|
       hours = 0
       user.shifts.where(calendar_id: self.id).each do |shift|
@@ -118,7 +128,7 @@ ORDER BY 1|
           date.end_of_day)/3600
       end
       if hours > self.employee_hour_threshold_daily
-        response[:alerts][:employee_hours_threshold].push({
+        response[:alerts][:daily_hours_threshold].push({
           user_id: user.id,
           user_name: user.name,
           hours: hours})
@@ -126,10 +136,28 @@ ORDER BY 1|
     end
   end
 
-  def gather_unassigned_shift_capacity_alerts(date, response)
+  def gather_weekly_hours_alerts(date, response)
+    self.users.distinct.each do |user|
+      hours = 0
+      user.shifts.where(calendar_id: self.id).each do |shift|
+        hours += shift.duration_during(date.beginning_of_day,
+          (date + 7.days).end_of_day)/3600
+      end
+      if hours > self.employee_hour_threshold_weekly
+        response[:alerts][:weekly_hours_threshold].push({
+          user_id: user.id,
+          user_name: user.name,
+          hours: hours})
+      end
+    end
+  end
+
+
+
+  def gather_unassigned_shift_capacity_alerts(start_date, end_date, response)
     shifts = self.shifts.where('start_time BETWEEN ? AND ?',
-      date.beginning_of_day,
-      date.end_of_day)
+      start_date.beginning_of_day,
+      end_date.end_of_day)
     shifts.each do |shift|
       if shift.usershifts.count < shift.capacity
         response[:alerts][:unassigned_shift_capacity].push({
