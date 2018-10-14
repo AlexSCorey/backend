@@ -151,7 +151,10 @@ WHERE
                  s3.id = us.shift_id AND
                  u2.id = u.id AND
                  ((s3.start_time <= s2.start_time AND s3.end_time > s2.start_time) OR
-                 (s3.start_time > s2.start_time AND s3.start_time < s2.end_time))) = 0) > 0
+                 (s3.start_time > s2.start_time AND s3.start_time < s2.end_time))) = 0) > 0 AND
+            (SELECT COUNT(us4.*)
+                 FROM usershifts us4
+                 WHERE us4.shift_id = s.id) < s.capacity
 ORDER BY unconflicted_available_users ASC|
 
     Shift.find_by_sql(pgsql)
