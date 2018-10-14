@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   post 'password/forgot', to: 'password#forgot'
   post 'password/reset', to: 'password#reset'
+  post 'invitations/complete', to: 'invitations#complete'
 
   resources :calendars, only: [:index, :create, :show, :update, :destroy] do
 
