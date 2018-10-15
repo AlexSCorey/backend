@@ -29,7 +29,7 @@ class Calendar < ApplicationRecord
 date_trunc('day', shifts.start_time) AS "Day",
 COUNT(shifts.id) AS "total_shifts",
 SUM(shifts.capacity) AS "total_capacity",
-SUM(usershift_query.usershift_count) AS "total_assigned_capacity",
+COALESCE(SUM(usershift_query.usershift_count),0) AS "total_assigned_capacity",
 COUNT(shifts.id) FILTER (WHERE published=true) AS "published_shifts",
 SUM(shifts.capacity) FILTER (WHERE published=true) AS "published_capacity",
 SUM(usershift_query.usershift_count) FILTER (WHERE published=true) AS "pulished_assigned_capacity",
