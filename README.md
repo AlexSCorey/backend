@@ -247,7 +247,7 @@ api_token required - must be user of calendar
 
 
 ## swaps#complete
-POST	https://fierce-forest-56311.herokuapp.com/swaps/complete
+PATCH https://fierce-forest-56311.herokuapp.com/swaps/complete
 
 api_token required - use the invitation token from swap decision email, not a user api_token
 
@@ -256,7 +256,7 @@ required keys:
 
 
 ## swap#show
-GET	https://fierce-forest-56311.herokuapp.com/swap
+GET https://fierce-forest-56311.herokuapp.com/swap
 
 api_token required - use the invitation token from swap decision email, not a user api_token
 

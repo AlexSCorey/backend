@@ -2,10 +2,15 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   
   resources :logins, only: [:create]
+  resources :users, only: [:create]
+
 
   post 'password/forgot', to: 'password#forgot'
   post 'password/reset', to: 'password#reset'
   post 'invitations/complete', to: 'invitations#complete'
+  patch '/update', to: 'users#update'
+  get '/myschedule', to: 'shifts#myschedule'
+  patch '/swaps/complete', to: 'swaps#complete'
 
   resources :calendars, only: [:index, :create, :show, :update, :destroy] do
 
@@ -34,7 +39,4 @@ Rails.application.routes.draw do
       resources :shifts, only: [:index]
     end
   end
-  patch '/update', to: 'users#update'
-  resources :users, only: [:create]
-  get '/myschedule', to: 'shifts#myschedule'
 end
