@@ -44,8 +44,8 @@ FROM usershifts
 GROUP BY usershifts.shift_id) AS "usershift_query"
 ON (shifts.id = usershift_query.shift_id)
 WHERE shifts.calendar_id=| + self.id.to_s + %Q|
-AND date_trunc('day', shifts.start_time) BETWEEN '| +
-start_date.utc.to_s + %Q|' AND '| + end_date.utc.to_s + %Q|'
+AND shifts.start_time BETWEEN '| +
+start_date.utc.to_s + %Q|' AND '| + end_date.end_of_day.utc.to_s + %Q|'
 GROUP BY 1 
 ORDER BY 1|
     return ActiveRecord::Base.connection.execute(sql)
