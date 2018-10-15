@@ -66,8 +66,8 @@ class ShiftsController < ApplicationController
                 @new_shifts = []
                 @past_shifts.each do |past_shift|
                     shift = Shift.new(
-                        start_time: past_shift.start_time + interval.days,
-                        end_time: past_shift.end_time + interval.days,
+                        start_time: past_shift.start_time + interval,
+                        end_time: past_shift.end_time + interval,
                         calendar_id: past_shift.calendar_id,
                         capacity: past_shift.capacity,
                         published: past_shift.published
