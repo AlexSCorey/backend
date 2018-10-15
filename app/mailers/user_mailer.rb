@@ -26,10 +26,12 @@ class UserMailer < ApplicationMailer
   
   def swap_complete_email
     complete_page = "https://scheduler-79e4e.firebaseapp.com/complete/"
-    @swap = params[:swap]
-    @managers = params[:swap].shift.calendar.users.managers
     @url = complete_page + params[:swap].api_token
-    mail(to: @managers.map{|m| m.email}, subject: "shift swap pending approval")
+    @swap = params[:swap]
+    managers = @swap.shift.calendar.users.managers
+    owners = @swap.shift.calendar.users.owners
+    emails = (managers.map{|m| m.email} + owners.map{|o| o.email}).uniq
+    mail(to: emails, subject: "shift swap pending approval")
   end
 
   def swap_decision_email
